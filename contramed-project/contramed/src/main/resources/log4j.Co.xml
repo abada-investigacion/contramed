@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Contramed
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+
+<log4j:configuration>
+
+    <appender name="CONSOLE.ERR" class="org.apache.log4j.ConsoleAppender">
+        <param name="target" value="System.err"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p %d{dd/MM/yyyy HH:mm:ss,SSS}] %l - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="warn"/>
+            <param name="LevelMax" value="fatal"/>
+            <param name="AcceptOnMatch" value="false"/>
+        </filter>
+    </appender>
+
+    <appender name="CONSOLE.OUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p %d{dd/MM/yyyy HH:mm:ss,SSS}] %l - %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="debug"/>
+            <param name="LevelMax" value="info"/>
+            <param name="AcceptOnMatch" value="false"/>
+        </filter>
+    </appender>
+
+
+    <appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="ImmediateFlush" value="true" />
+        <param name="File" value="log.txt" />
+        <param name="Append" value="false" />
+        <param name="Threshold" value="DEBUG" />
+        <param name="MaxFileSize" value="10000KB" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p %d{dd/MM/yyyy HH:mm:ss,SSS}] %l - %m%n"/>
+        </layout>
+    </appender>
+
+    <!--<logger name="com.abada" >
+        <level value="debug"/>        
+        <appender-ref ref="CONSOLE.OUT"/>        
+    </logger>
+    <logger name="org.hibernate" >
+        <level value="debug"/>
+        <appender-ref ref="CONSOLE.OUT"/>
+    </logger>-->
+    <root>
+        <priority value="WARN"></priority>
+        <appender-ref ref="CONSOLE.ERR"/>
+        <appender-ref ref="CONSOLE.OUT"/>
+        <!--<appender-ref ref="FILE"/>-->
+    </root>
+
+</log4j:configuration>
+

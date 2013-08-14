@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-licencia</actionName>
+            <displayName>licencia</displayName>
+            <goals>
+                <goal>license:update-file-header</goal>
+            </goals>
+            <properties>
+                <organizationName>Abada Servicios Desarrollo (investigacion@abadasoft.com)</organizationName>
+                <inceptionYear>2013</inceptionYear>
+                <projectName>Contramed</projectName>
+            </properties>
+        </action>
+    </actions>

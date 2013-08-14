@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-752-. --><xs:schema xmlns:tns="http://ws.miinterpreter.abada.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.miinterpreter.abada.com/">
+
+<xs:element name="HL7Exception" type="tns:HL7Exception" />
+
+<xs:element name="parse" type="tns:parse" />
+
+<xs:element name="parseResponse" type="tns:parseResponse" />
+
+<xs:complexType name="parse">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="parseResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="HL7Exception">
+<xs:sequence>
+<xs:element name="errorCode" type="xs:int" />
+<xs:element name="fieldPosition" type="xs:int" />
+<xs:element name="message" type="xs:string" minOccurs="0" />
+<xs:element name="segmentName" type="xs:string" minOccurs="0" />
+<xs:element name="segmentRepetition" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>web-serviceContramed</artifactId>
+        <groupId>com.abada</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <groupId>com.abada</groupId>
+    <artifactId>interpreterHL7</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>interpreterHL7</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+           <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-base</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>ca.uhn.hapi</groupId>
+            <artifactId>hapi-structures-v25</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+     <repositories>
+        <repository>
+            <id>hapi-sf</id>
+            <name>HAPI Sourceforge Repository</name>
+            <url>http://hl7api.sourceforge.net/m2</url>
+        </repository>
+    </repositories>
+</project>

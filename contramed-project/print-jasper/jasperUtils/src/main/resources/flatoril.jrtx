@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperTemplate PUBLIC "-//JasperReports//DTD Template//EN" "http://jasperreports.sourceforge.net/dtds/jaspertemplate.dtd">
+
+<jasperTemplate>
+	<style name="medicamento" mode="Opaque" forecolor="#FF3333" fontName="SansSerif" fontSize="4" isBold="true" isItalic="false"/>
+	<style name="dimpresion" mode="Opaque" fontName="SansSerif" fontSize="4" isBold="true" isItalic="false"/>
+	<style name="lote" mode="Opaque" fontName="SansSerif" fontSize="4" isBold="true" isItalic="false"/>
+	<style name="fcaducidad" mode="Opaque" fontName="SansSerif" fontSize="4" isBold="true" isItalic="false"/>
+	<style name="pactivo" mode="Opaque" forecolor="#FF0000" fontName="SansSerif" fontSize="4" isBold="true" isItalic="false"/>
+</jasperTemplate>

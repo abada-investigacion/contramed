@@ -1,0 +1,302 @@
+.add {
+    background-image: url(../images/custom/add.gif) !important;
+}
+
+.changestatus {
+    background-image: url(../images/custom/changestatus.png) !important;
+}
+
+.remove {
+    background-image: url(../images/custom/delete.gif) !important;
+}
+
+.logout {
+    background-image: url(../images/custom/logout.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+
+.user-info {
+    background-image: url(../images/custom/user-info.png) !important;
+}
+.user {
+    background-image: url(../images/custom/user.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.catalog {
+    background-image: url(../images/custom/consejoslocales.png) !important;
+}
+
+.product {
+    background-image: url(../images/custom/materiales.png) !important;
+}
+
+.cart {
+    background-image: url(../images/custom/cart.gif) !important;
+}
+
+.bill {
+    background-image: url(../images/custom/bill.gif) !important;
+}
+
+.search {
+    background-image: url(../images/custom/find.gif) !important;
+}
+
+.historic {
+    background-image: url(../images/custom/historic.gif) !important;
+}
+
+.list {
+    background-image: url(../images/custom/list.jpeg) !important;
+}
+
+.lock {
+    background-image: url(../images/custom/locked.png) !important;
+}
+
+.clean {
+    background-image: url(../images/custom/clean.gif) !important;
+}
+
+.bet {
+    background-image: url(../images/custom/bet.gif) !important;
+}
+
+.mod {
+    background-image: url(../images/custom/pen.gif) !important;
+}
+
+.ok {
+    background-image: url(../images/custom/ok.gif) !important;
+}
+.selectall{
+    background-image: url(../images/custom/selectall.gif) !important;
+}
+
+.company{
+    background-image: url(../images/custom/company.gif) !important;
+}
+
+.reboot{
+    background-image: url(../images/custom/reboot.png) !important;
+}
+
+.money{
+    background-image: url(../images/custom/money.png) !important;
+}
+
+.botiquin{
+    background-image: url(../images/custom/botiquin.png) !important;
+}
+.archivador{
+    background-image: url(../images/custom/archivador.png) !important;
+}
+.pastillas{
+    background-image: url(../images/custom/pastillas.png) !important;
+}
+.capsulas{
+    background-image: url(../images/custom/capsulas.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.cama{
+    background-image: url(../images/custom/cama.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.enfermera{
+    background-image: url(../images/custom/enfermera.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.formulario{
+    background-image: url(../images/custom/formulario.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.hora{
+    background-image: url(../images/custom/hora.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.jeringuilla{
+    background-image: url(../images/custom/jeringuilla.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.medico{
+    background-image: url(../images/custom/medico.png) !important;
+}
+.paciente{
+    background-image: url(../images/custom/paciente.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.tag{
+    background-image: url(../images/custom/tag.png) !important;
+}
+.farmacia{
+    background-image: url(../images/custom/farmacia.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.principioactivo{
+    background-image: url(../images/custom/principioactivo.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.espeprincipioactivo{
+    background-image: url(../images/custom/especiprincipioactivo.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.templatelapiz{
+    background-image: url(../images/custom/templatelapiz.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.incidenciafarmacia{
+    background-image: url(../images/custom/incidenciafarmacia.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.incidenciafarmacia2{
+    background-image: url(../images/custom/incidenciafarmacia2.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.incidenciasenfermeria{
+    background-image: url(../images/custom/incidenciasenfermeria.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.incidenciasenfermeria2{
+    background-image: url(../images/custom/incidenciasenfermeria2.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.historialenfermeria{
+    background-image: url(../images/custom/historialenfermeria.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+.historialfarmacia{
+    background-image: url(../images/custom/historialfarmacia.png) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+
+.warning{
+    background-image: url(../images/custom/warning.gif) !important;
+}
+
+.nothing{
+    background-image: url(../images/custom/nothing.png) !important;
+}
+.observaciones{
+    background-image: url(../images/custom/observaciones.gif) !important;
+}
+
+.observaciones1{
+    background-image: url(../images/custom/observaciones1.gif) !important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+
+.tarjeta{
+    background-image: url(../images/custom/tarjeta.png)!important;
+}
+
+.rfid{
+    background-image: url(../images/custom/rfid.png)!important;
+}
+
+.administracion{
+    background-image: url(../images/custom/administracion.png)!important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+
+.atras{
+    background-image: url(../images/custom/atras.png)!important;
+}
+
+.barcode{
+    background-image: url(../images/custom/barcode.png)!important;
+}
+
+.calendario{
+    background-image: url(../images/custom/calendario.png)!important;
+}
+
+.lupa{
+    background-image: url(../images/custom/lupa.gif)!important;
+}
+
+.carrito{
+    background-image: url(../images/custom/carrito.png)!important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+
+.historial{
+    background-image: url(../images/custom/historial.png)!important;
+}
+
+.nopautada{
+    background-image: url(../images/custom/no_pautada.png)!important;
+}
+
+.observaciones3{
+    background-image: url(../images/custom/observaciones.png)!important;
+}
+
+.sesion{
+    background-image: url(../images/custom/sesion.png)!important;
+}
+
+.siguiente_paciente{
+    background-image: url(../images/custom/siguiente_paciente.png)!important;
+}
+
+.sp{
+    background-image: url(../images/custom/sp.png)!important;
+}
+.historyprecisa{
+    background-image: url(../images/custom/historyprecisa.png)!important;
+    height: 20px;
+    width: 20px;
+    top:0px;
+}
+
+.refresh{
+    background-image: url(../images/custom/refresh.png)!important;
+}
+
+.play{
+    background-image: url(../images/custom/play.gif)!important;
+}

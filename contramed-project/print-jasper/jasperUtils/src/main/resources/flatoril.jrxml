@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="flatoril" pageWidth="87" pageHeight="297" columnWidth="74" columnSpacing="10" leftMargin="5" rightMargin="8" topMargin="8" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="abada.JasperLabelVersion" value="2.0"/>
+	<property name="abada.labelsPerBlister" value="8"/>
+	<template><![CDATA["flatoril.jrtx"]]></template>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="pactivo" class="java.lang.String">
+		<fieldDescription><![CDATA[pactivo]]></fieldDescription>
+	</field>
+	<field name="dimpresion" class="java.lang.String">
+		<fieldDescription><![CDATA[dimpresion]]></fieldDescription>
+	</field>
+	<field name="lote" class="java.lang.String">
+		<fieldDescription><![CDATA[lote]]></fieldDescription>
+	</field>
+	<field name="fcaducidad" class="java.lang.String">
+		<fieldDescription><![CDATA[fcaducidad]]></fieldDescription>
+	</field>
+	<field name="medicamento" class="java.lang.String">
+		<fieldDescription><![CDATA[medicamento]]></fieldDescription>
+	</field>
+	<field name="datamatrix" class="java.lang.String">
+		<fieldDescription><![CDATA[datamatrix]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="36" splitType="Prevent">
+			<textField>
+				<reportElement key="medicamento" style="medicamento" x="0" y="6" width="56" height="6"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{medicamento}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="datamatrix" mode="Opaque" x="56" y="6" width="18" height="18">
+					<property name="abada.rowSpan" value="3"/>
+					<property name="abada.rowHeight1" value="6"/>
+					<property name="abada.rowHeight2" value="6"/>
+					<property name="abada.rowHeight3" value="6"/>
+				</reportElement>
+				<jr:DataMatrix xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom" shape="force-square">
+					<jr:codeExpression><![CDATA[$F{datamatrix}]]></jr:codeExpression>
+				</jr:DataMatrix>
+			</componentElement>
+			<textField>
+				<reportElement key="fcaducidad" style="fcaducidad" x="28" y="12" width="28" height="6"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fcaducidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="lote" style="lote" x="0" y="12" width="28" height="6"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement key="dimpresion" style="dimpresion" x="0" y="18" width="56" height="6"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dimpresion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="pactivo" style="pactivo" x="0" y="0" width="74" height="6"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{pactivo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

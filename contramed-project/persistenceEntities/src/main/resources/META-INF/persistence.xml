@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Contramed
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="PersistenceEntitiesPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <jta-data-source>java:comp/env/jdbc/persistencedb</jta-data-source>
+    <class>com.abada.contramed.persistence.entity.Region</class>
+    <class>com.abada.contramed.persistence.entity.Table0162</class>
+    <class>com.abada.contramed.persistence.entity.PrepareHistoric</class>
+    <class>com.abada.contramed.persistence.entity.Address</class>
+    <class>com.abada.contramed.persistence.entity.Plantas</class>
+    <class>com.abada.contramed.persistence.entity.OrderMedication</class>
+    <class>com.abada.contramed.persistence.entity.TimingRange</class>
+    <class>com.abada.contramed.persistence.entity.TelephoneDoctor</class>
+    <class>com.abada.contramed.persistence.entity.GivesIncidence</class>
+    <class>com.abada.contramed.persistence.entity.Patient</class>
+    <class>com.abada.contramed.persistence.entity.OrderTiming</class>
+    <class>com.abada.contramed.persistence.entity.Dose</class>
+    <class>com.abada.contramed.persistence.entity.TemplatesMedication</class>
+    <class>com.abada.contramed.persistence.entity.RecursoTag</class>
+    <class>com.abada.contramed.persistence.entity.PrepareIncidence</class>
+    <class>com.abada.contramed.persistence.entity.Tablez029</class>
+    <class>com.abada.contramed.persistence.entity.OrderMedicationObservation</class>
+    <class>com.abada.contramed.persistence.entity.PatientTag</class>
+    <class>com.abada.contramed.persistence.entity.OrderMedicationInstruction</class>
+    <class>com.abada.contramed.persistence.entity.Recurso</class>
+    <class>com.abada.contramed.persistence.entity.Staff</class>
+    <class>com.abada.contramed.persistence.entity.GivesHistoric</class>
+    <class>com.abada.contramed.persistence.entity.Telephone</class>
+    <class>com.abada.contramed.persistence.entity.Nation</class>
+    <class>com.abada.contramed.persistence.entity.Order1</class>
+    <class>com.abada.contramed.persistence.entity.Servicio</class>
+    <class>com.abada.contramed.persistence.entity.Table0166</class>
+    <class>com.abada.contramed.persistence.entity.Table0001</class>
+    <class>com.abada.contramed.persistence.entity.Province</class>
+    <class>com.abada.contramed.persistence.entity.PatientId</class>
+    <class>com.abada.contramed.persistence.entity.MedicationAdditionalInformation</class>
+    <class>com.abada.contramed.persistence.entity.CatalogoMedicamentos</class>
+    <class>com.abada.contramed.persistence.entity.City</class>
+    <class>com.abada.contramed.persistence.entity.Table0002</class>
+    <class>com.abada.contramed.persistence.entity.Table0038</class>
+    <class>com.abada.contramed.persistence.entity.Table0119</class>
+    <class>com.abada.contramed.persistence.entity.MeasureUnit</class>
+    <class>com.abada.contramed.persistence.entity.CatalogoHasTemplates</class>
+    <class>com.abada.contramed.persistence.entity.PrincipioActivo</class>
+    <class>com.abada.contramed.persistence.entity.FrecuenciaPredef</class>
+    <class>com.abada.contramed.persistence.entity.PrincipioHasEspecialidad</class>
+    <class>com.abada.contramed.persistence.entity.Observation</class>
+    <class>com.abada.contramed.persistence.entity.MeasureUnitConversion</class>
+    <properties>
+      <property name="show_sql" value="true"/>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+      <property name="dialect" value="org.hibernate.dialect.OracleDialect"/>
+    </properties>
+  </persistence-unit>
+</persistence>

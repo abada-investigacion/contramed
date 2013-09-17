@@ -42,19 +42,13 @@
         </dependency>
         <dependency>
             <groupId>com.abada</groupId>
-            <artifactId>LDAPAuthentication</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.abada</groupId>
             <artifactId>blockMonitor</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.abada</groupId>
-            <artifactId>PersistenceEntities</artifactId>
+            <artifactId>persistenceEntities</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
@@ -69,6 +63,11 @@
             <artifactId>abada-commons-deprecated-extjs_v3</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ldapAuthentication</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <repositories>

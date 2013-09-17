@@ -86,7 +86,7 @@
        
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>PersistenceEntities</artifactId>
+            <artifactId>persistenceEntities</artifactId>
             <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
@@ -104,7 +104,7 @@
         </dependency>
         <dependency>
             <groupId>com.abada</groupId>
-            <artifactId>PersisteneceDomain</artifactId>
+            <artifactId>persisteneceDomain</artifactId>
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
             <exclusions>

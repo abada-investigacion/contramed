@@ -123,8 +123,8 @@
 
     <!-- File Manager-->
     <bean id="fileManager" class="com.abada.idmedicationweb.domain.file.FileManagerLocalPath">
-        <!--<property name="path" value="/home/katsu" />-->
-        <property name="path" value="/home/david" />
+        <property name="path" value="/home/katsu" />
+        <!--property name="path" value="/home/david" /-->
     </bean>
     
     <!--Pool de Genlabels -->

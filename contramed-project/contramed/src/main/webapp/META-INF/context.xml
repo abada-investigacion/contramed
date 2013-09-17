@@ -22,13 +22,13 @@
   -->
 
 <Context antiJARLocking="true" path="/contramed">
-    <Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
+    <!--Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
     username="contramed" password="charles" driverClassName="oracle.jdbc.OracleDriver"
-    url="jdbc:oracle:thin:@192.168.1.57:1521:xe" maxActive="10" maxIdle="4" />
-    <!--<Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
-    username="contramed" password="contramed" driverClassName="oracle.jdbc.OracleDriver"
-    url="jdbc:oracle:thin:@localhost:1521:ecomanda" maxActive="10" maxIdle="4" />
+    url="jdbc:oracle:thin:@192.168.1.57:1521:xe" maxActive="10" maxIdle="4" /-->
     <Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
+    username="mysql" password="4b4D4." driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://imasd.abadasoft.com:3306/contramed" maxActive="10" maxIdle="4" />
+    <!--Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
     username="contramed" password="contramed" driverClassName="oracle.jdbc.OracleDriver"
     url="jdbc:oracle:thin:@192.168.1.148:1521:xe" maxActive="10" maxIdle="4" />
     <Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"

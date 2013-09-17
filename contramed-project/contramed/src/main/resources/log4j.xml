@@ -49,20 +49,6 @@
         </filter>
     </appender>
 
-
-    <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
-        <!--<param name="ImmediateFlush" value="true" />-->
-        <param name="File" value="/var/tomcat/logs/logContramed.log" />
-	<param name="DatePattern" value="'.'yyyy-MM--dd" />
-        <!--<param name="Append" value="false" />
-        <param name="Threshold" value="DEBUG" />
-        <param name="MaxFileSize" value="10000KB" />
-        <param name="MaxBackupIndex" value="10" />-->
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%-5p %d{dd/MM/yyyy HH:mm:ss,SSS}] %l - %m%n"/>
-        </layout>
-    </appender>
-
     <!--<logger name="com.abada" >
         <level value="debug"/>        
         <appender-ref ref="FILE"/>        
@@ -73,8 +59,8 @@
     </logger>-->
     <root>
         <priority value="DEBUG"></priority>
-        <!--<appender-ref ref="CONSOLE.ERR"/>-->
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE.ERR"/>
+        <appender-ref ref="CONSOLE.OUT"/>
     </root>
 
 </log4j:configuration>

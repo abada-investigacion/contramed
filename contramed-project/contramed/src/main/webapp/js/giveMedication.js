@@ -1,9 +1,9 @@
 Ext.onReady(function(){
 
-    var applet=new Ext.contramed.MCAApplet({
-        timeout:1000,
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        timeout:1000,
+//        renderTo:Ext.getBody()
+//    });
 
     //var giveToolbar=new Ext.contramed.GiveNursingToolbar({
     var giveToolbar=new Ext.contramed.GiveNursingFilterToolbar({
@@ -21,7 +21,7 @@ Ext.onReady(function(){
     });
 
     var doseToolbar=new Ext.contramed.DoseToolbar({
-        applet:applet,
+//        applet:applet,
         addText:'Administrar',
         tooltipadd:'Administra la dosis, cogiendola por el lector de codigo de barras',
         removeText:'No Administrar',
@@ -169,29 +169,30 @@ Ext.onReady(function(){
 function showInit(){
     giveToolbar.setHideSubmitButton(true);
 
-    var rfidButton=new Ext.contramed.ButtonMCAApplet({
-        //text:'Leer Tarjeta',
-        iconCls:'rfid',
-        functionName:'readRfid',
-        tooltip:'Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento',
-        applet:applet,
-        nonStopRead:false,
-        listeners:{
-            read:function(data){
-                showThreatmentUrl(data, false,rfidButton);
-            }
-        }
-    });
+//    var rfidButton=new Ext.contramed.ButtonMCAApplet({
+//        //text:'Leer Tarjeta',
+//        iconCls:'rfid',
+//        functionName:'readRfid',
+//        tooltip:'Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento',
+//        applet:applet,
+//        nonStopRead:false,
+//        listeners:{
+//            read:function(data){
+//                showThreatmentUrl(data, false,rfidButton);
+//            }
+//        }
+//    });
         
     var initPanel=new Ext.Panel({
         items:[new Ext.Toolbar({
             //layout:'hbox',
-            items:[giveToolbar,rfidButton
+            items:[giveToolbar
+//                ,rfidButton
             ]
         }),bedmap
         ]
     });
-    rfidButton.forceRead();
+//    rfidButton.forceRead();
     setCentralPanel(initPanel,false);
 }
 
@@ -210,7 +211,7 @@ function showThreatment(resume){
     var toolbarInt=new Ext.Toolbar({
         //layout:'hbox',
         items:[new Ext.contramed.ButtonThreatmentToolbar({
-            applet:applet,
+//            applet:applet,
             resumeMode:resume,
             listeners:{
                 submitNextPatient:function(data,button){

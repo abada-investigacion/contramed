@@ -1,8 +1,8 @@
 Ext.onReady(function(){
 
-    var applet=new Ext.contramed.MCAApplet({
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        renderTo:Ext.getBody()
+//    });
 
     /**
      * Grid para mostrar el personal
@@ -287,18 +287,18 @@ function handleFormulario(opt,grid,title,url,seleccion,applet){
     /**
      *Botón para la lectura del Tag
      */
-    var buttontag=new Ext.contramed.ButtonMCAApplet({
-        text:'Acceso Etiqueta',
-        tooltip:'Acceder con etiqueta',
-        functionName:'readPCSC',
-        applet:applet,
-        listeners:{
-            read:function(data){
-                tags.setValue(data);
-
-            }
-        }
-    });
+//    var buttontag=new Ext.contramed.ButtonMCAApplet({
+//        text:'Acceso Etiqueta',
+//        tooltip:'Acceder con etiqueta',
+//        functionName:'readPCSC',
+//        applet:applet,
+//        listeners:{
+//            read:function(data){
+//                tags.setValue(data);
+//
+//            }
+//        }
+//    });
     /**
      *Definición de los campos del Panel: Nombre,Apellidos,etc..
      */
@@ -459,11 +459,12 @@ function handleFormulario(opt,grid,title,url,seleccion,applet){
                 layout: 'form',
                 border:false,
                 items: [tags]
-            },{
-                columnWidth:0.5,
-                border:false,
-                items: [buttontag]
             }
+//            ,{
+//                columnWidth:0.5,
+//                border:false,
+//                items: [buttontag]
+//            }
             ]
         }],
         buttons:[

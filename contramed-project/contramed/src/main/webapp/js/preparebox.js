@@ -1,9 +1,9 @@
 Ext.onReady(function(){
 
-    var applet=new Ext.contramed.MCAApplet({
-        timeout:1000,
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        timeout:1000,
+//        renderTo:Ext.getBody()
+//    });
 
     var dateToolbar=new Ext.contramed.DateRangeFilterToolbar({
         listeners:{
@@ -16,7 +16,7 @@ Ext.onReady(function(){
     });
 
     var doseToolbar=new Ext.contramed.DoseToolbar({
-        applet:applet,
+//        applet:applet,
         addText:'A&ntilde;adir',
         removeText:'Quitar',
         tooltipremove:'Eliminar dosis del cajet&iacute;n;',
@@ -140,30 +140,31 @@ Ext.onReady(function(){
     function showInit(){
         dateToolbar.setHideSubmitButton(true);
 
-        var rfidButton=new Ext.contramed.ButtonMCAApplet({
-            //text:'Leer Tarjeta',
-            iconCls:'rfid',
-            functionName:'readRfid',
-            tooltip:'Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento',
-            applet:applet,
-            nonStopRead:false,
-            listeners:{
-                read:function(data){
-                    showThreatmentUrl(data, false,rfidButton);
-                }
-            }
-        });
+//        var rfidButton=new Ext.contramed.ButtonMCAApplet({
+//            //text:'Leer Tarjeta',
+//            iconCls:'rfid',
+//            functionName:'readRfid',
+//            tooltip:'Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento',
+//            applet:applet,
+//            nonStopRead:false,
+//            listeners:{
+//                read:function(data){
+//                    showThreatmentUrl(data, false,rfidButton);
+//                }
+//            }
+//        });
         
         var initPanel=new Ext.Panel({
             items:[new Ext.Toolbar({
                 //layout:'hbox',
-                items:[dateToolbar,rfidButton
+                items:[dateToolbar
+//                    ,rfidButton
                 ]
             }),bedmap
             ]
         });
         
-        rfidButton.forceRead();
+//        rfidButton.forceRead();
         setCentralPanel(initPanel,false);
     }
 
@@ -181,7 +182,7 @@ Ext.onReady(function(){
         var toolbarInt=new Ext.Toolbar({
             //layout:'hbox',
             items:[new Ext.contramed.ButtonThreatmentToolbar({
-                applet:applet,
+//                applet:applet,
                 resumeMode:resume,
                 listeners:{
                     submitNextPatient:function(data,button){

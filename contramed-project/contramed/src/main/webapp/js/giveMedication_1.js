@@ -1,8 +1,8 @@
 Ext.onReady(function(){
 
-    var applet=new Ext.contramed.MCAApplet({
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        renderTo:Ext.getBody()
+//    });
 
     /**
      * Pantalla inicial pregunta cama
@@ -20,7 +20,8 @@ Ext.onReady(function(){
                 success:function(){
                     //bedForm.destroy();
                     //window.setTimeout(showActiveTreatment,1000);
-                    showActiveTreatment('',applet,iTab);
+//                    showActiveTreatment('',applet,iTab);
+                    showActiveTreatment('',undefined,iTab);
                 //showActiveTreatment(bedForm.get(fieldName).getValue());
                 //bedForm.destroy();
                 }
@@ -57,18 +58,20 @@ Ext.onReady(function(){
                     }
                 }
             }],
-            buttons:[new Ext.contramed.ButtonMCAApplet({
-                text:'Buscar',
-                functionName:'readRfid',
-                tooltip:'Obtener mediante etiqueta etiqueta del paciente',
-                applet:applet,
-                listeners:{
-                    read:function(data){
-                        patientFormByTag.get('tag2').setValue(data);
-                        submitBedForm(patientFormByTag,tabs.getIndexActiveTab());
-                    }
-                }
-            })]
+            buttons:[
+//                new Ext.contramed.ButtonMCAApplet({
+//                text:'Buscar',
+//                functionName:'readRfid',
+//                tooltip:'Obtener mediante etiqueta etiqueta del paciente',
+//                applet:applet,
+//                listeners:{
+//                    read:function(data){
+//                        patientFormByTag.get('tag2').setValue(data);
+//                        submitBedForm(patientFormByTag,tabs.getIndexActiveTab());
+//                    }
+//                }
+//            })
+        ]
         });
 
         var bedFormByTag = new Ext.form.FormPanel( {
@@ -99,18 +102,20 @@ Ext.onReady(function(){
                     }
                 }
             }],
-            buttons:[new Ext.contramed.ButtonMCAApplet({
-                text:'Buscar',
-                functionName:'readRfid',
-                tooltip:'Obtener mediante etiqueta la cama/cajetin del paciente',
-                applet:applet,
-                listeners:{
-                    read:function(data){
-                        bedFormByTag.get('tag1').setValue(data);
-                        submitBedForm(bedFormByTag,tabs.getIndexActiveTab());
-                    }
-                }
-            })]
+            buttons:[
+//                new Ext.contramed.ButtonMCAApplet({
+//                text:'Buscar',
+//                functionName:'readRfid',
+//                tooltip:'Obtener mediante etiqueta la cama/cajetin del paciente',
+//                applet:applet,
+//                listeners:{
+//                    read:function(data){
+//                        bedFormByTag.get('tag1').setValue(data);
+//                        submitBedForm(bedFormByTag,tabs.getIndexActiveTab());
+//                    }
+//                }
+//            })
+        ]
         });
 
         var comboBeds=new Ext.contramed.ComboBoxRecurso({
@@ -228,7 +233,7 @@ Ext.onReady(function(){
                 })]
             }),
             new Ext.contramed.DoseToolbar({
-                applet:applet,
+//                applet:applet,
                 addText:'Administrar',
                 tooltipadd:'Administra la dosis, cogiendola por el lector de codigo de barras',
                 listeners:{
@@ -262,5 +267,5 @@ Ext.onReady(function(){
         setCentralPanel(treatmentForm);
     }
 
-    initMain(applet,0);
+    initMain(undefined,0);
 });

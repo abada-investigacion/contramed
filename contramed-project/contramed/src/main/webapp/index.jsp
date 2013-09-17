@@ -32,8 +32,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!--<meta http-equiv="Refresh" content="0; URL=login.htm" />-->
-        <script type="text/javascript">
+        <meta http-equiv="Refresh" content="0; URL=login.htm" />
+        <!--script type="text/javascript">
             function fullView(){
                 if (navigator.userAgent.indexOf('Chrom')>=0){
                     window.location='login.htm';
@@ -41,8 +41,8 @@
                     window.open('login.htm','','fullscreen=yes,scrollbars=auto');
                 }
             }
-        </script>
+        </script-->
     </head>
-    <body onload="fullView();">
-    </body>
+    <!--body onload="fullView();">
+    </body-->
 </html>

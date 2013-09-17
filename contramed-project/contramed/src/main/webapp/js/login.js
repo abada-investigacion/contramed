@@ -43,41 +43,41 @@ Ext.onReady(function() {
         }
     }   
 
-    var applet=new Ext.contramed.MCAApplet({
-        renderTo:Ext.getBody()
-    });
-
-    var MCAButton=new Ext.contramed.ButtonMCAApplet({
-            //text:'Acceder con Etiqueta',
-            functionName:'readRfid',
-            //functionName:'readFingerPrint',
-            tooltip:'Lee etiqueta; a&ntilde;ade el nombre del usuario en el campo de texto',
-            applet:applet,                       
-            iconCls:'tarjeta',
-            listeners:{
-                read:function(data){
-                    Ext.abada.Ajax.requestJson({
-                        url:'getUserName.htm',
-                        //zzurl:'getUserNameByFinger.htm',
-                        scope:this,
-                        waitTitle:'Conectando',
-                        waitMsg:'Comprobando usuario y contrase&ntilde;a...',
-                        params:{
-                            tag:data
-                        },
-                        failure:function(){
-                            //login.get('username_login').setValue('');
-                            Ext.Msg.alert('Error','Nombre de usuario o contrase&ntilde;a incorrectos.');
-                            MCAButton.forceRead();
-                        },
-                        success:function(storeData){
-                            //login.get('username_login').setValue(storeData.data[0]);
-                            window.location='main.htm';
-                        }
-                    });
-                }
-            }
-        });
+//    var applet=new Ext.contramed.MCAApplet({
+//        renderTo:Ext.getBody()
+//    });
+//
+//    var MCAButton=new Ext.contramed.ButtonMCAApplet({
+//            //text:'Acceder con Etiqueta',
+//            functionName:'readRfid',
+//            //functionName:'readFingerPrint',
+//            tooltip:'Lee etiqueta; a&ntilde;ade el nombre del usuario en el campo de texto',
+//            applet:applet,                       
+//            iconCls:'tarjeta',
+//            listeners:{
+//                read:function(data){
+//                    Ext.abada.Ajax.requestJson({
+//                        url:'getUserName.htm',
+//                        //zzurl:'getUserNameByFinger.htm',
+//                        scope:this,
+//                        waitTitle:'Conectando',
+//                        waitMsg:'Comprobando usuario y contrase&ntilde;a...',
+//                        params:{
+//                            tag:data
+//                        },
+//                        failure:function(){
+//                            //login.get('username_login').setValue('');
+//                            Ext.Msg.alert('Error','Nombre de usuario o contrase&ntilde;a incorrectos.');
+//                            MCAButton.forceRead();
+//                        },
+//                        success:function(storeData){
+//                            //login.get('username_login').setValue(storeData.data[0]);
+//                            window.location='main.htm';
+//                        }
+//                    });
+//                }
+//            }
+//        });
 
     var login = new Ext.form.FormPanel( {
         frame : true,
@@ -124,7 +124,9 @@ Ext.onReady(function() {
             formBind:true,
             handler:formSubmit,
             tooltip:'Acceso a la aplicaci&oacute;n'
-        },MCAButton]
+        }
+//        ,MCAButton
+    ]
     });
    
     var win=new Ext.Window({

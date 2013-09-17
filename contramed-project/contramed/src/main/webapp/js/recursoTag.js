@@ -8,9 +8,9 @@
  */
 
 Ext.onReady(function(){
-    var applet=new Ext.contramed.MCAApplet({
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        renderTo:Ext.getBody()
+//    });
 
     /**
      *Grid donde se muestra la lista de RecursoTag
@@ -104,18 +104,18 @@ function handleFormulario(opt,grid,title,url,selecion,applet){
     });
 
     cbRecursoTag.getStore().load();
-    var buttontag=new Ext.contramed.ButtonMCAApplet({
-        text:'Leer Etiqueta',
-        functionName:'readPCSC',
-        tooltip:'Coge id de la tarjeta Rfid',
-        applet:applet,
-        listeners:{
-            read:function(data){ 
-                tagg.setValue(data);
-
-            }
-        }
-    });
+//    var buttontag=new Ext.contramed.ButtonMCAApplet({
+//        text:'Leer Etiqueta',
+//        functionName:'readPCSC',
+//        tooltip:'Coge id de la tarjeta Rfid',
+//        applet:applet,
+//        listeners:{
+//            read:function(data){ 
+//                tagg.setValue(data);
+//
+//            }
+//        }
+//    });
 
 
     var tagg =new Ext.form.TextField({
@@ -176,11 +176,13 @@ function handleFormulario(opt,grid,title,url,selecion,applet){
                 layout: 'form',
                 border:false,
                 items: [tagg]
-            },{
-                columnWidth:0.5,
-                border:false,
-                items: [buttontag]
-            },{
+            },
+//            {
+//                columnWidth:0.5,
+//                border:false,
+//                items: [buttontag]
+//            },
+            {
                 columnWidth:1,
                 layout: 'form',
                 border:false,

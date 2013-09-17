@@ -1,8 +1,8 @@
 Ext.onReady(function(){
 
-    var applet=new Ext.contramed.MCAApplet({
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        renderTo:Ext.getBody()
+//    });
 
     /**
      * Pantalla inicial pregunta cama
@@ -20,7 +20,7 @@ Ext.onReady(function(){
                 success:function(){
                     //showActiveTreatment(bedForm.get(fieldName).getValue());
                     //bedForm.destroy();
-                    showActiveTreatment('',applet,iTab);
+                    showActiveTreatment('',undefined,iTab);
                 //window.setTimeout(showActiveTreatment,1000);
                 }
             });
@@ -56,18 +56,20 @@ Ext.onReady(function(){
                     }
                 }
             }],
-            buttons:[new Ext.contramed.ButtonMCAApplet({
-                text:'Buscar',
-                functionName:'readRfid',
-                tooltip:'Lee de la etiqueta y muestra la cama que pertenece',
-                applet:applet,
-                listeners:{
-                    read:function(data){
-                        bedFormByTag.get('tag').setValue(data);
-                        submitBedForm(bedFormByTag,tabs.getIndexActiveTab());
-                    }
-                }
-            })]
+            buttons:[
+//                new Ext.contramed.ButtonMCAApplet({
+//                text:'Buscar',
+//                functionName:'readRfid',
+//                tooltip:'Lee de la etiqueta y muestra la cama que pertenece',
+//                applet:applet,
+//                listeners:{
+//                    read:function(data){
+//                        bedFormByTag.get('tag').setValue(data);
+//                        submitBedForm(bedFormByTag,tabs.getIndexActiveTab());
+//                    }
+//                }
+//            })
+        ]
         });
 
         var comboBeds=new Ext.contramed.ComboBoxRecurso({
@@ -187,7 +189,7 @@ Ext.onReady(function(){
             }),
             new Ext.contramed.DoseToolbar({
                 colspan:2,
-                applet:applet,
+//                applet:applet,
                 addText:'A&ntilde;adir',
                 removeText:'Quitar',
                 tooltipremove:'Eliminar dosis del cajet&iacute;n;',
@@ -244,5 +246,5 @@ Ext.onReady(function(){
         dateRange.onSubmit();
     }
 
-    initMain(applet,0);
+    initMain(undefined,0);
 });

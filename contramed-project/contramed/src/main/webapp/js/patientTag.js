@@ -1,8 +1,8 @@
 Ext.onReady(function(){
 
-    var applet=new Ext.contramed.MCAApplet({
-        renderTo:Ext.getBody()
-    });
+//    var applet=new Ext.contramed.MCAApplet({
+//        renderTo:Ext.getBody()
+//    });
 
     /**
  *Pantalla inicial en la que pedimos la identificacion al paciente para buscarlo,
@@ -24,7 +24,7 @@ Ext.onReady(function(){
                     detailsForm.getForm().reset();
                 },
                 success:function(){
-                    showPatientInfo(applet);
+                    showPatientInfo(undefined);
                 }
             });
           
@@ -69,7 +69,7 @@ Ext.onReady(function(){
                         id:grid.sm.getSelected().get('id')
                     },
                     success: function() {
-                        showPatientInfo(applet);
+                        showPatientInfo(undefined);
                     },
                     failure:function(text){
                         if (text){

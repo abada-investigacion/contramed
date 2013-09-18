@@ -25,7 +25,6 @@ package com.abada.webcontramed.controller;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.abada.commons.fingerprint.ReaderFactory;
 import com.abada.commons.fingerprint.ReadersFactory;
 import com.abada.commons.fingerprint.enums.ReaderType;
@@ -36,13 +35,31 @@ import com.abada.figerprintdb4o.Db4oUserDatabase;
 import com.abada.figerprintdb4o.UserDatabase;
 import com.abada.figerprintdb4o.data.User;
 import com.abada.springframework.web.servlet.view.JsonView;
+import com.abada.springframework.web.servlet.view.StringView;
 import com.abada.web.exjs.Success;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -75,8 +92,42 @@ public class LoginController extends CommonControllerConstants {
         return new ModelAndView("pages/initial", model);
     }
 
+    @RequestMapping("/decode.htm")
+    public ModelAndView login(@RequestBody String imageBase64, HttpServletRequest request) {
+        String resultString=null;
+        try {
+            imageBase64= imageBase64.substring(imageBase64.indexOf(',')+1);            
+            byte[] bs = DatatypeConverter.parseBase64Binary(imageBase64);
+
+            Reader reader = new MultiFormatReader();
+
+            InputStream in = new ByteArrayInputStream(bs);
+            BufferedImage image = ImageIO.read(in);
+
+            int w=image.getWidth(),h=image.getHeight();
+            int [] data=image.getRGB(0, 0, w, h, null, 0, w);
+            
+            RGBLuminanceSource source=new RGBLuminanceSource(w,h,data);
+            HybridBinarizer hybridBinarizer=new HybridBinarizer(source);
+            BinaryBitmap binaryBitmap=new BinaryBitmap(hybridBinarizer);
+            
+            Result result=reader.decode(binaryBitmap);           
+            resultString=result.getText();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NotFoundException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ModelAndView(new StringView(resultString,null));
+    }
+
     /**
-     * Valida el login y password y guarda en sesion el Staff y el Role del usuario
+     * Valida el login y password y guarda en sesion el Staff y el Role del
+     * usuario
+     *
      * @param login
      * @param password
      * @param request
@@ -100,8 +151,8 @@ public class LoginController extends CommonControllerConstants {
     @RequestMapping("/getUserName.htm")
     public ModelAndView getUserName(String tag, HttpServletRequest request) {
         /*ExtjsStore result = new ExtjsStore();
-        result.setData(this.loginDao.getUsernameByTag(tag));
-        return new ModelAndView(new JsonView(result));*/
+         result.setData(this.loginDao.getUsernameByTag(tag));
+         return new ModelAndView(new JsonView(result));*/
 
         //Elimino la posible session anterior
         this.invalidateSession(request);
@@ -121,8 +172,8 @@ public class LoginController extends CommonControllerConstants {
     @RequestMapping("/getUserNameByFinger.htm")
     public ModelAndView getUserNameByFinger(String tag, HttpServletRequest request) {
         /*ExtjsStore result = new ExtjsStore();
-        result.setData(this.loginDao.getUsernameByTag(tag));
-        return new ModelAndView(new JsonView(result));*/
+         result.setData(this.loginDao.getUsernameByTag(tag));
+         return new ModelAndView(new JsonView(result));*/
 
         //Elimino la posible session anterior
         this.invalidateSession(request);
@@ -134,10 +185,10 @@ public class LoginController extends CommonControllerConstants {
         try {
             //FIXME Only work if Server is in Windows and with drivers for UareU 4500 installed
             /*User user = db.getUserByFingerPrint(new BASE64Decoder().decodeBuffer(tag), f.getVerificator());
-            if (user!=null){*/
+             if (user!=null){*/
             //FIXME Comment 3 next lines if you want fingerprints
             List<User> users = db.getAllUser();
-            User user=users.get(0);
+            User user = users.get(0);
             if (users.size() > 0) {
                 List<Staff> staffs = this.staffDao.findByUsername(user.getUsername());
                 if (staffs != null && !staffs.isEmpty()) {

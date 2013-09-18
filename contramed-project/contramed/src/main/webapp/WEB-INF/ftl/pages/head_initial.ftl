@@ -37,6 +37,7 @@
 
 <script src="jslib/ext-abada.js" type="text/javascript"></script>
 <script src="js/common-mcaapplet.js" type="text/javascript"></script>
+<script src="js/common-barcode.js" type="text/javascript"></script>
 
 <!--locales-->
 <script src="jslib/ext-lang-es.js" type="text/javascript"></script>

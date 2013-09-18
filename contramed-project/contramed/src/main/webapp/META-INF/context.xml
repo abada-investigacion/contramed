@@ -20,19 +20,15 @@
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
   -->
-
 <Context antiJARLocking="true" path="/contramed">
-    <!--Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
+  <!--Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
     username="contramed" password="charles" driverClassName="oracle.jdbc.OracleDriver"
     url="jdbc:oracle:thin:@192.168.1.57:1521:xe" maxActive="10" maxIdle="4" /-->
-    <Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
-    username="mysql" password="4b4D4." driverClassName="com.mysql.jdbc.Driver"
-    url="jdbc:mysql://imasd.abadasoft.com:3306/contramed" maxActive="10" maxIdle="4" />
-    <!--Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
+  <Resource auth="Application" driverClassName="com.mysql.jdbc.Driver" maxActive="10" maxIdle="4" name="jdbc/persistencedb" password="4b4D4." type="javax.sql.DataSource" url="jdbc:mysql://imasd.abadasoft.com:3306/contramed" username="mysql"/>
+  <!--Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
     username="contramed" password="contramed" driverClassName="oracle.jdbc.OracleDriver"
     url="jdbc:oracle:thin:@192.168.1.148:1521:xe" maxActive="10" maxIdle="4" />
     <Resource name="jdbc/persistencedb" auth="Application" type="javax.sql.DataSource"
     username="contramed" password="contramed" driverClassName="oracle.jdbc.OracleDriver"
     url="jdbc:oracle:thin:@10.36.183.199:1521:ecomanda" maxActive="10" maxIdle="4" />-->
 </Context>
-

@@ -15,7 +15,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         this.addEvents('read','click');
     },
     onRender: function(ct, position) {
-        var tplTemplate = '<div id=\"'+this.id+'\"><video id=\"' + this.getNameVideo() + '\" height=\"'+this.height+'\"></video>'//
+        var tplTemplate = '<div id=\"'+this.id+'\"><video id=\"' + this.getNameVideo() + '\" height=\"'+this.height+'\" autoplay></video>'//
                 + '<canvas id=\"' + this.getNameCanvas() + '\" style=\"display:none;\"></canvas></div>';
         this.tpl = new Ext.XTemplate(tplTemplate);
         if (position) {
@@ -53,8 +53,9 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
                 navigator.mozGetUserMedia ||
                 navigator.msGetUserMedia);
         navigator.myGetMedia({video: true}, function(stream) {
+            window.URL = window.URL || window.webkitURL;
             video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
-            video.play();
+//            video.play();
             video.addEventListener('click', function() {
                 me.fireEvent('click', me);
             }, false);

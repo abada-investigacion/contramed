@@ -25,8 +25,14 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>4.0.1</version>
+            <version>5.2.0</version>
             <type>jar</type>
+            <exclusions>
+                <exclusion>
+                    <artifactId>itext</artifactId>
+                    <groupId>com.lowagie</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

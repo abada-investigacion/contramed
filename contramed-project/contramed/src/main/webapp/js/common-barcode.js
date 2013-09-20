@@ -5,17 +5,20 @@
 Ext.namespace('Ext.contramed');
 
 Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
-    height:50,
+    height: 50,
     running: false,
-    nonStopRead:false,
+    nonStopRead: false,
+    tooltipType: 'qtip',
     constructor: function(cfg) {
         Ext.apply(this, cfg);
         Ext.contramed.BarcodeButton.superclass.constructor.call(this, cfg);
 
-        this.addEvents('read','click');
+        if (this.tooltip)
+            this.setTooltip(this.tooltip, true);
+        this.addEvents('read', 'click');
     },
     onRender: function(ct, position) {
-        var tplTemplate = '<div id=\"'+this.id+'\"><video id=\"' + this.getNameVideo() + '\" height=\"'+this.height+'\" autoplay></video>'//
+        var tplTemplate = '<div id=\"' + this.id + '\"><video id=\"' + this.getNameVideo() + '\" height=\"' + this.height + '\" autoplay></video>'//
                 + '<canvas id=\"' + this.getNameCanvas() + '\" style=\"display:none;\"></canvas></div>';
         this.tpl = new Ext.XTemplate(tplTemplate);
         if (position) {
@@ -37,6 +40,8 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         this.setup();
 
         this.addListener('click', this.onButtonClick, this);
+
+        this.setTooltip(this.tooltip, true);
     },
     getNameVideo: function() {
         return this.id + 'Video';
@@ -73,7 +78,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         ctx.drawImage(video, 0, 0);
 //save canvas image as data url
         var dataURL = canvas.toDataURL();
-        this.onReadImage( dataURL);
+        this.onReadImage(dataURL);
 ////set preview image src to dataURL
 //        document.getElementById('preview').src = dataURL;
 //// place the image value in the text box
@@ -86,7 +91,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
             url: 'decode.htm',
             scope: this,
             success: function(response) {
-                if (!this.nonStopRead){
+                if (!this.nonStopRead) {
                     this.onButtonClick();
                 }
                 this.fireEvent('read', response.responseText);
@@ -98,16 +103,43 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         });
     },
     onButtonClick: function() {
+        var video = document.getElementById(this.getNameVideo());
         if (!this.running) {
             Ext.get(this.id).fadeIn({remove: false, useDisplay: true, endOpacity: 1, duration: 2});
+            video.play();
             Ext.TaskMgr.start(this.task);
             this.running = true;
         } else {
-            Ext.get(this.id).fadeOut({remove: false, useDisplay: true, endOpacity: 0.5, duration: 2});
+            Ext.get(this.id).fadeOut({remove: false, useDisplay: true, endOpacity: 0.1, duration: 2});
+            video.pause();
             Ext.TaskMgr.stop(this.task);
             this.running = false;
         }
     }, forceRead: function() {
         this.fireEvent('click');
+    }, setTooltip: function(tooltip, /* private */ initial) {
+        if (this.rendered) {
+            if (!initial) {
+                this.clearTip();
+            }
+            var video = document.getElementById(this.getNameVideo());
+            if (Ext.isObject(tooltip)) {
+                Ext.QuickTips.register(Ext.apply({
+                    target: video.id
+                }, tooltip));
+                this.tooltip = tooltip;
+            } else {
+                video[this.tooltipType] = tooltip;
+            }
+        } else {
+            this.tooltip = tooltip;
+        }
+        return this;
+    }, // private
+    clearTip: function() {
+        if (Ext.isObject(this.tooltip)) {
+            var video = document.getElementById(this.getNameVideo());
+            Ext.QuickTips.unregister(video);
+        }
     }
 });

@@ -9,6 +9,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
     running: false,
     nonStopRead: false,
     tooltipType: 'qtip',
+    autoLoad:false,
     constructor: function(cfg) {
         Ext.apply(this, cfg);
         Ext.contramed.BarcodeButton.superclass.constructor.call(this, cfg);
@@ -42,6 +43,8 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         this.addListener('click', this.onButtonClick, this);
 
         this.setTooltip(this.tooltip, true);
+        
+        this.onButtonClick();
     },
     getNameVideo: function() {
         return this.id + 'Video';
@@ -103,20 +106,27 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         });
     },
     onButtonClick: function() {
-        var video = document.getElementById(this.getNameVideo());
-        if (!this.running) {
-            Ext.get(this.id).fadeIn({remove: false, useDisplay: true, endOpacity: 1, duration: 2});
-            video.play();
-            Ext.TaskMgr.start(this.task);
-            this.running = true;
-        } else {
-            Ext.get(this.id).fadeOut({remove: false, useDisplay: true, endOpacity: 0.1, duration: 2});
-            video.pause();
-            Ext.TaskMgr.stop(this.task);
-            this.running = false;
+        if (this.rendered) {
+            var video = document.getElementById(this.getNameVideo());
+            if (!this.running) {
+                Ext.get(this.id).fadeIn({remove: false, useDisplay: true, endOpacity: 1, duration: 2});
+                video.play();
+                Ext.TaskMgr.start(this.task);
+                this.running = true;
+            } else {
+                Ext.get(this.id).fadeOut({remove: false, useDisplay: true, endOpacity: 0.1, duration: 2});
+                video.pause();
+                Ext.TaskMgr.stop(this.task);
+                this.running = false;
+            }
+            return true;
+        }else{
+            return false;
         }
     }, forceRead: function() {
-        this.fireEvent('click');
+        if (!this.onButtonClick()){
+            this.autoLoad=true;
+        }
     }, setTooltip: function(tooltip, /* private */ initial) {
         if (this.rendered) {
             if (!initial) {

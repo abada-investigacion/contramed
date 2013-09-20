@@ -161,7 +161,7 @@ Ext.onReady(function() {
             ]
         });
 
-//        rfidButton.forceRead();
+        rfidButton.forceRead();
         setCentralPanel(initPanel, false);
     }
 

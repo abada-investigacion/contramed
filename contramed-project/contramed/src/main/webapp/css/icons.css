@@ -227,10 +227,12 @@
 
 .tarjeta{
     background-image: url(../images/custom/tarjeta.png)!important;
+    background-repeat: no-repeat;
 }
 
 .rfid{
     background-image: url(../images/custom/rfid.png)!important;
+    background-repeat: no-repeat;
 }
 
 .administracion{
@@ -246,6 +248,7 @@
 
 .barcode{
     background-image: url(../images/custom/barcode.png)!important;
+    background-repeat: no-repeat;
 }
 
 .calendario{

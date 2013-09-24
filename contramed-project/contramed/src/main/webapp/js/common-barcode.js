@@ -135,7 +135,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         Ext.get(this.getNameVideo()).remove();
 
         var me = this;
-        var img = document.createElement('button');        
+        var img = document.createElement('canvas');        
         img.setAttribute('style', 'height:'+this.height);        
         img.setAttribute('id', this.getNameVideo());
         img.setAttribute('class',this.iconCls);      

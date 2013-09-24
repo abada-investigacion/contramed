@@ -165,6 +165,7 @@ Ext.onReady(function() {
 
         var rfidButton = new Ext.contramed.BarcodeButton({
             height: 30,
+            iconCls:'rfid',
             listeners: {
                 read: function(data) {
                     showThreatmentUrl(data, false, rfidButton);

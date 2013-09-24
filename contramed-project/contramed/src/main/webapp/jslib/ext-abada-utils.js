@@ -49,12 +49,27 @@ function setCentralPanel(panelCentral,autoDestroy){
             aux.removeAll(true);
         }
         else{
+            //Chapuza del quince
+            destroyVideo(aux);
             aux.get(0).setVisible(false);
             aux.removeAll(false);
         }
         aux.add(panelCentral);
         aux.doLayout();
     //aux.resumeEvents();
+    }
+}
+
+function destroyVideo(container){
+    if (container.items){
+        for (var i=0;i<container.items.length;i++){
+            destroyVideo(container.get(i));
+        }
+    }else{
+        if (container.ctype && container.ctype==='Ext.contramed.BarcodeButton'){
+            console.info('Destroy '+container.id);
+            container.destroy();            
+        }
     }
 }
 

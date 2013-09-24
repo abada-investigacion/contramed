@@ -40,8 +40,9 @@ Ext.onReady(function() {
         }
     }
 
-    var barcode = new Ext.contramed.BarcodeButton({       
-        height:30,
+    var barcode = new Ext.contramed.BarcodeButton({
+        height: 30,
+        iconCls: 'tarjeta',
         listeners: {
             read: function(data) {
                 Ext.abada.Ajax.requestJson({

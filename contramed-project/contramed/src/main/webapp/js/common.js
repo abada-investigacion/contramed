@@ -358,6 +358,8 @@ Ext.contramed.DoseToolbar = Ext.extend(Ext.Toolbar, {
             height: 30,
             scope: this,
             nonStopRead: true,
+            autoLoad: true,
+            iconCls:'barcode',
             listeners: {
                 read: function(data) {
                     this.scope.onSubmitAdd(data);
@@ -373,6 +375,7 @@ Ext.contramed.DoseToolbar = Ext.extend(Ext.Toolbar, {
                 height: 30,
                 scope: this,
                 nonStopRead: true,
+                iconCls:'barcode',
                 listeners: {
                     read: function(data) {
                         this.scope.onSubmitRemove(data);
@@ -402,8 +405,11 @@ Ext.contramed.DoseToolbar = Ext.extend(Ext.Toolbar, {
     },
     submitAdd: function() {
         this.addButton.fireEvent('click');
+        if (this.removeButton)
+            this.removeButton.fireEvent('click');
     },
     submitRemove: function() {
+        this.addButton.fireEvent('click');
         if (this.removeButton)
             this.removeButton.fireEvent('click');
     }
@@ -643,20 +649,20 @@ Ext.contramed.ButtonThreatmentToolbar = Ext.extend(Ext.Toolbar, {
                 tooltip: 'Escribir Observaciones Libres',
                 handler: this.onSubmiObservation
             }));
-            this.items.push(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-            this.rfidButton=new Ext.contramed.BarcodeButton({
-                height: 30,
-                scope: this,
-                nonStopRead: false,
-                listeners: {
-                    read: function(data) {
-                        this.scope.fireEvent('submitNextPatient', data, this);
-                    }
-                }
-            });
-
-            this.rfidButton.setTooltip('Lee de la etiqueta y muestra el siguiente paciente');
-            this.items.push(this.rfidButton);
+//            this.items.push(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+//            this.rfidButton = new Ext.contramed.BarcodeButton({
+//                height: 30,
+//                scope: this,
+//                nonStopRead: false,
+//                listeners: {
+//                    read: function(data) {
+//                        this.scope.fireEvent('submitNextPatient', data, this);
+//                    }
+//                }
+//            });
+//
+//            this.rfidButton.setTooltip('Lee de la etiqueta y muestra el siguiente paciente');
+//            this.items.push(this.rfidButton);
         }
 
         this.addEvents(['submitBack', 'submiObservation', 'submitNextPatient', 'submitAcceptAll']);
@@ -676,8 +682,8 @@ Ext.contramed.ButtonThreatmentToolbar = Ext.extend(Ext.Toolbar, {
         this.resumeMode = value;
     },
     forceReadRfid: function() {
-        if (this.rfidButton)
-            this.rfidButton.fireEvent('click');
+//        if (this.rfidButton)
+//            this.rfidButton.fireEvent('click');
     }
 });
 

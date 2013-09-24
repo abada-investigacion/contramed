@@ -9,7 +9,9 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
     running: false,
     nonStopRead: false,
     tooltipType: 'qtip',
-    autoLoad:false,
+    autoLoad: false,
+    ctype: 'Ext.contramed.BarcodeButton',
+    iconCls:'',
     constructor: function(cfg) {
         Ext.apply(this, cfg);
         Ext.contramed.BarcodeButton.superclass.constructor.call(this, cfg);
@@ -17,16 +19,25 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         if (this.tooltip)
             this.setTooltip(this.tooltip, true);
         this.addEvents('read', 'click');
+
+        this.addListener('hide', this.onHide, this);
+        this.addListener('disable', this.onHide, this);
+        this.addListener('destroy', this.onHide, this);
+    },
+    onHide: function() {
+        if (this.running) {
+            Ext.TaskMgr.stop(this.task);
+        }
     },
     onRender: function(ct, position) {
-        var tplTemplate = '<div id=\"' + this.id + '\"><video id=\"' + this.getNameVideo() + '\" height=\"' + this.height + '\" autoplay></video>'//
-                + '<canvas id=\"' + this.getNameCanvas() + '\" style=\"display:none;\"></canvas></div>';
+        var me = this;
+        Ext.contramed.BarcodeButton.superclass.onRender.call(this, ct, position);
+
+        var tplTemplate = '<canvas id=\"' + this.getNameCanvas() + '\" style=\"display:none;\"></canvas>';
         this.tpl = new Ext.XTemplate(tplTemplate);
-        if (position) {
-            this.tpl.insertBefore(position, undefined, true);
-        } else {
-            this.tpl.append(ct, undefined, true);
-        }
+
+        var div = Ext.get(this.id);
+        this.tpl.append(div, undefined, true);
 
         this.task = {
             run: function() {
@@ -36,15 +47,11 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
             interval: 1000
         };
 
-        Ext.contramed.BarcodeButton.superclass.onRender.call(this, ct, position);
-
-        this.setup();
-
         this.addListener('click', this.onButtonClick, this);
 
         this.setTooltip(this.tooltip, true);
-        
-        this.onButtonClick();
+        if (this.autoLoad)
+            this.onButtonClick();
     },
     getNameVideo: function() {
         return this.id + 'Video';
@@ -53,8 +60,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         return this.id + 'Canvas';
     },
     setup: function() {
-        var me = this;
-        var video = document.getElementById(this.getNameVideo());
+        var video = this.addVideo();
 
         navigator.myGetMedia = (navigator.getUserMedia ||
                 navigator.webkitGetUserMedia ||
@@ -63,10 +69,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         navigator.myGetMedia({video: true}, function(stream) {
             window.URL = window.URL || window.webkitURL;
             video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
-//            video.play();
-            video.addEventListener('click', function() {
-                me.fireEvent('click', me);
-            }, false);
+//            video.play();            
         }, this.error);
     },
     error: function(e) {
@@ -105,44 +108,83 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
             params: data
         });
     },
+    addVideo: function() {
+        var img = Ext.get(this.getNameVideo());
+        if (img)
+            img.remove();
+
+        var me = this;
+        var video = document.createElement('video');
+        video.setAttribute('autoplay', 'true');
+        video.setAttribute('height', this.height);
+        video.setAttribute('id', this.getNameVideo());
+        video.setAttribute('class',this.iconCls);
+        video.addEventListener('click', function() {
+            me.fireEvent('click', me);
+        }, false);
+
+
+        var canvas = Ext.get(this.getNameCanvas());
+        Ext.get(video).insertBefore(canvas);
+
+        if (this.tooltip)
+            this.setTooltip(this.tooltip, false);
+        return video;
+    },
+    removeVideo: function() {
+        Ext.get(this.getNameVideo()).remove();
+
+        var me = this;
+        var img = document.createElement('button');        
+        img.setAttribute('style', 'height:'+this.height);        
+        img.setAttribute('id', this.getNameVideo());
+        img.setAttribute('class',this.iconCls);      
+        img.addEventListener('click', function() {
+            me.fireEvent('click', me);
+        }, false);
+        var canvas = Ext.get(this.getNameCanvas());
+        Ext.get(img).insertBefore(canvas);
+
+        if (this.tooltip)
+            this.setTooltip(this.tooltip, false);
+    },
     onButtonClick: function() {
         if (this.rendered) {
-            var video = document.getElementById(this.getNameVideo());
             if (!this.running) {
+                this.setup();
                 Ext.get(this.id).fadeIn({remove: false, useDisplay: true, endOpacity: 1, duration: 2});
-                video.play();
                 Ext.TaskMgr.start(this.task);
                 this.running = true;
             } else {
-                Ext.get(this.id).fadeOut({remove: false, useDisplay: true, endOpacity: 0.1, duration: 2});
-                video.pause();
+                this.removeVideo();
+                Ext.get(this.id).fadeOut({remove: false, useDisplay: true, endOpacity: 0.5, duration: 2});
                 Ext.TaskMgr.stop(this.task);
                 this.running = false;
             }
             return true;
-        }else{
+        } else {
             return false;
         }
     }, forceRead: function() {
-        if (!this.onButtonClick()){
-            this.autoLoad=true;
+        if (!this.onButtonClick()) {
+            this.autoLoad = true;
         }
     }, setTooltip: function(tooltip, /* private */ initial) {
+        this.tooltip = tooltip;
         if (this.rendered) {
             if (!initial) {
                 this.clearTip();
             }
-            var video = document.getElementById(this.getNameVideo());
-            if (Ext.isObject(tooltip)) {
-                Ext.QuickTips.register(Ext.apply({
-                    target: video.id
-                }, tooltip));
-                this.tooltip = tooltip;
-            } else {
-                video[this.tooltipType] = tooltip;
+            var e1 = document.getElementById(this.getNameVideo());
+            if (e1) {
+                if (Ext.isObject(tooltip)) {
+                    Ext.QuickTips.register(Ext.apply({
+                        target: e1.id
+                    }, tooltip));
+                } else {
+                    e1[this.tooltipType] = tooltip;
+                }
             }
-        } else {
-            this.tooltip = tooltip;
         }
         return this;
     }, // private

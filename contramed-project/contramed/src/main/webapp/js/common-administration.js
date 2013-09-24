@@ -313,6 +313,7 @@ Ext.contramedadmin.PatientToolbar = Ext.extend(Ext.Toolbar, {
         var button=new Ext.contramed.BarcodeButton({
             height: 30,
             scope:this,
+            iconCls:'add',
             listeners: {
                 read: function(data) {
                     this.scope.tfTag.setValue(data);

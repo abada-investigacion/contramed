@@ -144,6 +144,7 @@ Ext.onReady(function() {
             height: 30,
             tooltip: 'Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento',
             nonStopRead: false,
+            iconCls:'tarjeta',
             listeners: {
                 read: function(data) {
                     showThreatmentUrl(data, false, rfidButton);

@@ -35,22 +35,18 @@ import com.abada.figerprintdb4o.Db4oUserDatabase;
 import com.abada.figerprintdb4o.UserDatabase;
 import com.abada.figerprintdb4o.data.User;
 import com.abada.springframework.web.servlet.view.JsonView;
-import com.abada.springframework.web.servlet.view.StringView;
 import com.abada.web.exjs.Success;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
-import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +54,8 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,10 +91,10 @@ public class LoginController extends CommonControllerConstants {
     }
 
     @RequestMapping("/decode.htm")
-    public ModelAndView login(@RequestBody String imageBase64, HttpServletRequest request) {
-        String resultString=null;
+    public ResponseEntity<String> login(@RequestBody String imageBase64, HttpServletRequest request) {
+        String resultString = null;
         try {
-            imageBase64= imageBase64.substring(imageBase64.indexOf(',')+1);            
+            imageBase64 = imageBase64.substring(imageBase64.indexOf(',') + 1);
             byte[] bs = DatatypeConverter.parseBase64Binary(imageBase64);
 
             Reader reader = new MultiFormatReader();
@@ -104,24 +102,30 @@ public class LoginController extends CommonControllerConstants {
             InputStream in = new ByteArrayInputStream(bs);
             BufferedImage image = ImageIO.read(in);
 
-            int w=image.getWidth(),h=image.getHeight();
-            int [] data=image.getRGB(0, 0, w, h, null, 0, w);
-            
-            RGBLuminanceSource source=new RGBLuminanceSource(w,h,data);
-            HybridBinarizer hybridBinarizer=new HybridBinarizer(source);
-            BinaryBitmap binaryBitmap=new BinaryBitmap(hybridBinarizer);
-            
-            Result result=reader.decode(binaryBitmap);           
-            resultString=result.getText();
-            
+            int w = image.getWidth(), h = image.getHeight();
+            int[] data = image.getRGB(0, 0, w, h, null, 0, w);
+
+            RGBLuminanceSource source = new RGBLuminanceSource(w, h, data);
+            HybridBinarizer hybridBinarizer = new HybridBinarizer(source);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(hybridBinarizer);
+
+            Result result = reader.decode(binaryBitmap);
+            resultString = result.getText();
+
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NotFoundException e){
+        } catch (NotFoundException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ModelAndView(new StringView(resultString,null));
+        ResponseEntity<String> result;
+        if (resultString == null) {
+            result = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            result = new ResponseEntity<String>(resultString,HttpStatus.OK);
+        }
+        return result;
     }
 
     /**

@@ -1,5 +1,6 @@
 .add {
     background-image: url(../images/custom/add.gif) !important;
+    background-repeat: no-repeat;
 }
 
 .changestatus {

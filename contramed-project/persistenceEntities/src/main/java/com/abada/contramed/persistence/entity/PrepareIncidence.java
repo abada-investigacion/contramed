@@ -99,12 +99,6 @@ public class PrepareIncidence implements Serializable {
     @ManyToOne(optional = false)
     private Recurso bed;
     /**
-     * Paciente que iba a recibir la medicacion
-     */
-    @JoinColumn(name = "patient_patientid", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Patient patient;
-    /**
      * Dosis que se estaba preparando
      */
     @JoinColumn(name = "dose_iddose", referencedColumnName = "iddose", nullable = true)
@@ -116,7 +110,13 @@ public class PrepareIncidence implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false,length = 30)
     private TypeIncidence typeIncidence;
-
+    /**
+     * Paciente que iba a recibir la medicacion
+     */
+    @JoinColumn(name = "patient_patientid", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Patient patient;
+    
     public TypeIncidence getTypeIncidence() {
         return typeIncidence;
     }

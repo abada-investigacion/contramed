@@ -358,7 +358,6 @@ Ext.contramed.DoseToolbar = Ext.extend(Ext.Toolbar, {
             height: 30,
             scope: this,
             nonStopRead: true,
-            autoLoad: true,
             iconCls:'barcode',
             listeners: {
                 read: function(data) {
@@ -405,11 +404,8 @@ Ext.contramed.DoseToolbar = Ext.extend(Ext.Toolbar, {
     },
     submitAdd: function() {
         this.addButton.fireEvent('click');
-        if (this.removeButton)
-            this.removeButton.fireEvent('click');
     },
     submitRemove: function() {
-        this.addButton.fireEvent('click');
         if (this.removeButton)
             this.removeButton.fireEvent('click');
     }

@@ -11,7 +11,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
     tooltipType: 'qtip',
     autoLoad: false,
     ctype: 'Ext.contramed.BarcodeButton',
-    iconCls:'',
+    iconCls: '',
     constructor: function(cfg) {
         Ext.apply(this, cfg);
         Ext.contramed.BarcodeButton.superclass.constructor.call(this, cfg);
@@ -47,11 +47,13 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
             interval: 1000
         };
 
-        this.addListener('click', this.onButtonClick, this);
+        this.addListener('click', this.forceRead, this);
 
         this.setTooltip(this.tooltip, true);
         if (this.autoLoad)
             this.onButtonClick();
+        else
+            this.removeVideo();
     },
     getNameVideo: function() {
         return this.id + 'Video';
@@ -118,7 +120,7 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         video.setAttribute('autoplay', 'true');
         video.setAttribute('height', this.height);
         video.setAttribute('id', this.getNameVideo());
-        video.setAttribute('class',this.iconCls);
+        video.setAttribute('class', this.iconCls);
         video.addEventListener('click', function() {
             me.fireEvent('click', me);
         }, false);
@@ -132,13 +134,15 @@ Ext.contramed.BarcodeButton = Ext.extend(Ext.Component, {
         return video;
     },
     removeVideo: function() {
-        Ext.get(this.getNameVideo()).remove();
+        var video = Ext.get(this.getNameVideo());
+        if (video)
+            video.remove();
 
         var me = this;
-        var img = document.createElement('canvas');        
-        img.setAttribute('style', 'height:'+this.height);        
+        var img = document.createElement('canvas');
+        img.setAttribute('style', 'height:' + this.height);
         img.setAttribute('id', this.getNameVideo());
-        img.setAttribute('class',this.iconCls);      
+        img.setAttribute('class', this.iconCls);
         img.addEventListener('click', function() {
             me.fireEvent('click', me);
         }, false);

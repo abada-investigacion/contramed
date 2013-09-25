@@ -109,13 +109,6 @@ public class GivesHistoric implements Serializable, Historic {
     @JoinColumn(name = "staff_idstaff", referencedColumnName = "idstaff", nullable = false)
     @ManyToOne(optional = false)
     private Staff staffIdstaff;
-
-    /**
-     * Paciente al que administro la medicacion
-     */
-    @JoinColumn(name = "patient", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Patient patient;
     /**
      * Tipo de administracion
      */
@@ -123,7 +116,14 @@ public class GivesHistoric implements Serializable, Historic {
     @Enumerated(EnumType.STRING)
     @Column(name = "read_patient_type", nullable = false, length = 15)
     private TypeGetPatient typeGetPatient;
-
+    /**
+     * Paciente al que administro la medicacion
+     */
+    @JoinColumn(name = "patient", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    private Patient patient;
+    
+    
     public GivesHistoric() {
     }
 

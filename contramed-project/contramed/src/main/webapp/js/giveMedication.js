@@ -172,7 +172,7 @@ Ext.onReady(function() {
                 }
             }
         });
-        button.setTooltip('Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento');
+        rfidButton.setTooltip('Lee de la etiqueta del caje&iacute;n o del paciente y muestra su tratamiento');
 
         var initPanel = new Ext.Panel({
             items: [new Ext.Toolbar({

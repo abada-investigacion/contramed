@@ -1,9 +1,13 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-package com.abada.trazability.dao.impl;
+package com.abada.trazability.entity;
 
 /*
  * #%L
- * Web Archetype
+ * Contramed
  * %%
  * Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
  * %%
@@ -23,24 +27,36 @@ package com.abada.trazability.dao.impl;
  * #L%
  */
 
-import com.abada.trazability.dao.SampleDao;
-import com.abada.trazability.entity.SampleEntity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.springframework.transaction.annotation.Transactional;
-import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
-
+import java.util.Date;
 
 /**
  *
  * @author katsu
  */
-public class SampleDaoImpl extends JpaDaoUtils implements SampleDao{
-    @PersistenceContext(unitName = "trazabilityPU")
-    private EntityManager entityManager;
-    
-    @Transactional(value = "trazability-txm", rollbackFor = {Exception.class})
-    public void persist(SampleEntity entity){
-        entityManager.persist(entity);
-    }
+public interface Historic {
+
+    Dose getDoseIddose();
+
+    Date getEventDate();
+
+    String getObservation();
+
+    Date getOrderTimingDate();
+
+    OrderTiming getOrderTimingIdorderTiming();
+
+    Staff getStaffIdstaff();
+
+    void setDoseIddose(Dose doseIddose);
+
+    void setEventDate(Date eventDate);
+
+    void setObservation(String observation);
+
+    void setOrderTimingDate(Date orderTimingDate);
+
+    void setOrderTimingIdorderTiming(OrderTiming orderTimingIdorderTiming);
+
+    void setStaffIdstaff(Staff staffIdstaff);
+
 }

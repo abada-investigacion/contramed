@@ -1,9 +1,8 @@
-
-package com.abada.trazability.dao;
+package com.abada.trazability.dao.city;
 
 /*
  * #%L
- * Web Archetype
+ * Contramed
  * %%
  * Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
  * %%
@@ -23,11 +22,26 @@ package com.abada.trazability.dao;
  * #L%
  */
 
-import com.abada.trazability.entity.SampleEntity;
+import com.abada.trazability.entity.City;
+import java.util.List;
+
 /**
  *
- * @author katsu
+ * @author david
  */
-public interface SampleDao {
-    public void persist(SampleEntity entity);
+public interface CityDao {
+
+    /**
+     *obtenemos la lista de todas las ciudades {@link City}
+     * @return list <City>{@link City}
+     */
+    public List<City> findAll();
+
+    /**
+     *obtenemos la lista de ciudades {@link City} a partir de idcity
+     * @param idcity
+     * @return list <City>{@link City}
+     */
+    public List<City> findByIdcity(Integer idcity);
 }
+

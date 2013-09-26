@@ -1,9 +1,13 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-package com.abada.trazability.entity;
+package com.abada.trazability.entity.temp;
 
 /*
  * #%L
- * Web Archetype
+ * Contramed
  * %%
  * Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
  * %%
@@ -23,32 +27,18 @@ package com.abada.trazability.entity;
  * #L%
  */
 
-import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 /**
- *
+ * Define el modo en el que se ha prescrito el medicamento
  * @author katsu
  */
-@Entity
-public class SampleEntity implements Serializable{
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Basic(optional = false)
-    @Column(name = "idIdType", nullable = false)
-    private Integer id;
-    
-    public Integer getId() {
-        return id;
-    }
+public enum PrescriptionType {
+    /**
+     * Prescription de un especialidad
+     */
+    ARTICLE,
+    /**
+     * Prescripcion de un principio activo
+     */
+    ACTIVE;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }
- 

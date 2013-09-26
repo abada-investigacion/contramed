@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Web Archetype
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.abada</groupId>
+    <artifactId>trazability</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>trazability</name>  
+    <profiles>
+        <profile>
+            <id>local</id>    
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>                 
+            <properties>
+                <db.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</db.dialect>
+                <db.autogenerate>update</db.autogenerate>
+                <db.configuration>
+                    <![CDATA[
+                        <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="ds1">
+                            <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+                            <property name="url" value="jdbc:mysql://imasd.abadasoft.com:3306/contramed" />
+                            <property name="username" value="mysql" />
+                            <property name="password" value="4b4D4." />
+                            <property name="testOnBorrow" value="true" />
+                            <property name="validationQuery" value="SELECT 1" />
+                        </bean>
+                    ]]>
+                </db.configuration>
+                <deploy.path.rest>/trazability-rest</deploy.path.rest>
+                <deploy.path.web>/trazability-web</deploy.path.web>
+                <trazability.server.url>http://localhost:8080/trazability-rest/</trazability.server.url>
+                <trazability.server.secure.url>https://localhost:8443/trazability-rest/</trazability.server.secure.url>
+                <trazability.server.url.roles>/rs/identity/user/roles/list</trazability.server.url.roles>              
+                <trazability.server.url.dni.roles>/rs/identity/user/dni/roles/list</trazability.server.url.dni.roles>
+            </properties>
+        </profile>
+        <profile>
+            <id>cloud Abada</id>    
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>                 
+            <properties>
+                <db.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</db.dialect>
+                <db.autogenerate>update</db.autogenerate>
+                <db.configuration>
+                    <![CDATA[
+                        <cloud:data-source id="ds1" >        
+                        </cloud:data-source>
+                    ]]>
+                </db.configuration>  
+                <deploy.path.rest>/trazability-rest</deploy.path.rest>
+                <deploy.path.web>/trazability-web</deploy.path.web>
+                <trazability.server.url>http://trazability-rest.cfimasd.abadasoft.com/</trazability.server.url>
+                <trazability.server.secure.url>http://trazability-rest.cfimasd.abadasoft.com/</trazability.server.secure.url>
+                <trazability.server.url.roles>/rs/identity/user/roles/list</trazability.server.url.roles>            
+                <trazability.server.url.dni.roles>/rs/identity/user/dni/roles/list</trazability.server.url.dni.roles>
+            </properties>
+        </profile>
+    </profiles>
+  <modules>
+    <module>trazability-api</module>
+    <module>trazability-entities</module>
+    <module>trazability-dao</module>
+    <module>trazability-rest</module>
+    <module>trazability-web</module>
+  </modules>
+</project>

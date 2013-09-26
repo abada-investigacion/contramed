@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Web Archetype
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:security="http://www.springframework.org/schema/security"       
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+          http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd                          
+">
+    <!--
+                Indicamos que clases deben ser leidas por Spring para buscar recursos
+        -->
+    <context:component-scan base-package="com.abada.trazability.web" />
+    
+    <bean id="menuService" class="com.abada.springframework.web.servlet.menu.MenuServiceImpl">
+        <property name="parentPackage" value="" />
+    </bean>
+    
+    <!-- Secured annotation for role control -->
+    <security:global-method-security jsr250-annotations="enabled"/>
+    <!-- handlers mapping -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter" />
+                <ref bean="stringConverter" />
+            </list>
+        </property>        
+        <property name="customModelAndViewResolvers">
+            <list>
+                <bean class="com.abada.springframework.web.servlet.view.AbadaModelAndViewResolver" />
+            </list>
+        </property>
+        <property name="customArgumentResolver" >
+            <bean class="org.springframework.mobile.device.DeviceWebArgumentResolver" />
+        </property>
+    </bean>
+    
+    <bean id="jsonView" class="com.abada.springframework.web.servlet.view.JsonView">
+        <property name="jsonProperties">
+            <map>
+                <entry key="DATE_FORMAT" value="yyyy-MM-dd HH:mm:ss" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stringConverter"
+          class="org.springframework.http.converter.StringHttpMessageConverter">
+        <property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
+    </bean>
+
+    <bean id="jsonConverter" class="com.abada.springframework.http.converter.json.JsonHttpMessageConverter" >
+        <property name="jsonProperties">
+            <map>
+                <entry key="DATE_FORMAT" value="yyyy-MM-dd HH:mm:ss" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="handlerMapping1" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="order" value="1" />
+        <property name="interceptors">
+            <list>                
+                <!-- On pre-handle, resolve the device that originated the web request -->
+                <bean class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor" />
+                <!-- On pre-handle, redirects mobile users to "myapp.com/m" (declare after DeviceResolverHandlerInterceptor) -->
+                <!--bean class="org.springframework.mobile.device.switcher.SiteSwitcherHandlerInterceptor" factory-method="urlPath">
+                    <constructor-arg index="0" type="java.lang.String" value="/m" />
+                    <constructor-arg index="1" type="java.lang.String" value="/${deploy.path.web}" />
+                </bean-->
+            </list>
+        </property>
+    </bean>              
+        
+    <!-- freemarker config -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer" >
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+    </bean>
+    <!--
+    View resolvers can also be configured with ResourceBundles or XML files. If you need
+    different view resolving based on Locale, you have to use the resource bundle resolver.
+    -->
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".ftl"/>
+    </bean>                
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    </bean>        
+    
+    <bean id="dwmLoader" class="com.abada.dwm.Loader" init-method="load" /> 
+     
+    <bean id="restTemplateFactory" class="com.abada.springframework.web.client.RestTemplateFactory" >
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter" />
+                <ref bean="stringConverter" />
+            </list>
+        </property>
+    </bean>
+    <bean id="restTemplate" class="com.abada.springframework.web.client.RestTemplate" factory-bean="restTemplateFactory" factory-method="createInstance" scope="prototype"/>              
+</beans>
+

@@ -84,7 +84,11 @@ License along with this program.  If not, see
         <module>trazability-dao</module>
         <module>trazability-rest</module>
         <module>trazability-web</module>
-    </modules>
+    <module>trazability-jasper-utils</module>
+    <module>trazability-jasper-commons</module>
+    <module>trazability-jasper-print</module>
+    <module>trazability-datamatrix-utils</module>
+  </modules>
     <build>
         <plugins>
             <plugin>

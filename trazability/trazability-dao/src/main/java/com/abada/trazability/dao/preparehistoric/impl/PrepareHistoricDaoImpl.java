@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.abada.trazability.dao.preparehistoric.impl;
 
 /*
@@ -26,7 +25,6 @@ package com.abada.trazability.dao.preparehistoric.impl;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.abada.trazability.dao.preparehistoric.PrepareHistoricDao;
 import com.abada.trazability.entity.PrepareHistoric;
 import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
@@ -41,20 +39,20 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("prepareHistoricDao")
-public class PrepareHistoricDaoImpl extends JpaDaoUtils implements PrepareHistoricDao{
+//@Repository("prepareHistoricDao")
+public class PrepareHistoricDaoImpl extends JpaDaoUtils implements PrepareHistoricDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;
 
-    @Transactional(readOnly=true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public Long loadPrepareHistoricSizeAll(GridRequest filters) {
-        List<Long> result = this.find(this.entityManager,"select count(*) from PrepareHistoric gi " + filters.getQL("gi", true), filters.getParamsValues());
+        List<Long> result = this.find(this.entityManager, "select count(*) from PrepareHistoric gi " + filters.getQL("gi", true), filters.getParamsValues());
         return result.get(0);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<PrepareHistoric> loadPrepareHistoricAll(GridRequest filters) {
-        return this.find(this.entityManager,"from PrepareHistoric gi " + filters.getQL("gi", true), filters.getParamsValues(),filters.getStart(), filters.getLimit());
+        return this.find(this.entityManager, "from PrepareHistoric gi " + filters.getQL("gi", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
     }
 }

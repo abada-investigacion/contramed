@@ -26,18 +26,13 @@ package com.abada.trazability.dao.staff;
  * #L%
  */
 
-import com.abada.authentication.ldap.Authentication;
-import com.abada.authentication.ldap.exception.LDAPException;
 import com.abada.trazability.entity.Staff;
 import com.abada.trazability.entity.enums.TypeRole;
 import com.abada.trazability.entity.enums.TypeStaff;
 import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
 import com.abada.springframework.web.servlet.command.extjs.gridpanel.GridRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -47,15 +42,9 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author maria
  */
-@Repository("StaffDao")
+//@Repository("StaffDao")
 public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
 
-    private Authentication authentication;
-
-    @Resource(name = "authenticationContramed")
-    public void setAuthentication(Authentication authentication) {
-        this.authentication = authentication;
-    }
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;
 
@@ -69,13 +58,13 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
     public Long loadSizeAll(GridRequest filters,String option) {
         List<Long> result = new ArrayList<Long>();
         if(option.equals("2")){
-                result=this.find("select count(*) from Staff st where st.historic=0" + filters.getQL("st", false), filters.getParamsValues());
+                result=this.find(this.entityManager,"select count(*) from Staff st where st.historic=0" + filters.getQL("st", false), filters.getParamsValues());
          }else{
             if(option.equals("3")){
-                 result=this.find("select count(*) from Staff st where st.historic=1" + filters.getQL("st", false), filters.getParamsValues());
+                 result=this.find(this.entityManager,"select count(*) from Staff st where st.historic=1" + filters.getQL("st", false), filters.getParamsValues());
             }  else{
                 if(option.equals("1")){
-                     result=this.find("select count(*) from Staff st " + filters.getQL("st", true), filters.getParamsValues());
+                     result=this.find(this.entityManager,"select count(*) from Staff st " + filters.getQL("st", true), filters.getParamsValues());
                 }
             }
         }
@@ -91,13 +80,13 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
     public List<Staff> loadAll(GridRequest filters, String option) {
         List<Staff> staff =new ArrayList<Staff>();
         if(option.equals("2")){
-            staff = this.find("from Staff st where st.historic=0" + filters.getQL("st", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+            staff = this.find(this.entityManager,"from Staff st where st.historic=0" + filters.getQL("st", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
         }else{
             if(option.equals("3")){
-                staff = this.find("from Staff st where st.historic=1" + filters.getQL("st", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+                staff = this.find(this.entityManager,"from Staff st where st.historic=1" + filters.getQL("st", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
             }else{
                 if(option.equals("1")){
-                    staff = this.find("from Staff st " + filters.getQL("st", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+                    staff = this.find(this.entityManager,"from Staff st " + filters.getQL("st", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
                 }
             }
         }
@@ -110,7 +99,7 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
      */
     @Transactional(value="trazability-txm",readOnly = true)
     public List<Staff> listStaff() {
-        List<Staff> result = (List<Staff>) this.entityManager.findByNamedQuery("Staff.findAll");
+        List<Staff> result = (List<Staff>) this.entityManager.createNamedQuery("Staff.findAll").getResultList();
         return result;
     }
 
@@ -125,7 +114,7 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
      * @param surname1
      * @param surname2
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void insertStaff(String username, String tag, TypeRole role, String name, String surname1, String surname2) throws Exception{
         //Miramos si la persona que vamos a dar de alta
         // ya ha estado dada de alta en la aplicación anteriormente
@@ -167,7 +156,7 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
      * @param surname1
      * @param surname2
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void updateStaff(Long idstaff, String username, String tag, TypeRole role, String name, String surname1, String surname2) throws Exception {
 
         Staff stf = (Staff) this.entityManager.find(Staff.class, new Long(idstaff));
@@ -198,7 +187,7 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
      * El personal no se borrara, se pondra su campo historic a false
      * @param idstaff
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void delete(Long idstaff) {
         Staff s = this.entityManager.find(Staff.class, idstaff);
@@ -217,9 +206,7 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Staff> findByTag(String tag) {
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("tag", tag);
-        return this.entityManager.findByNamedQueryAndNamedParams("Staff.findByTag", parametros);
+        return this.entityManager.createNamedQuery("Staff.findByTag").setParameter("tag", tag).getResultList();
     }
 
     /**
@@ -230,70 +217,68 @@ public class StaffDaoImpl extends JpaDaoUtils implements StaffDao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Staff> findByUsername(String username) {
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("username", username);
-        return this.entityManager.findByNamedQueryAndNamedParams("Staff.findByUsername", parametros);
+        return this.entityManager.createNamedQuery("Staff.findByUsername").setParameter("username", username).getResultList();
     }
 
-    public Staff check(String adminuser,String password,String username) throws Exception{
-        
-        Staff sldap = new Staff();
-        Staff sl = new Staff();
-        //Busco en la base de datos si esta dado de alta ya en la base de datos
-        List<Staff> usern = this.findByUsername(username);
-        //Traigo la información del personal del LDAP.
-        Map userValues = null;
-        try {
-            userValues = authentication.getUserInformation(adminuser, password, username);        
-        } catch (LDAPException ex) {
-            throw ex;
-        }
-        //Obtengo los datos de la persona
-        if (userValues != null) {
-            if (userValues.containsKey("sn")) {
-                String[] aux = (String[]) userValues.get("sn");
-                for (String a : aux) {
-                    sldap.setSurname1(a);
-                }
-            }
-            if (userValues.containsKey("givenName")) {
-                String[] aux = (String[]) userValues.get("givenName");
-                for (String a : aux) {
-                    sldap.setName(a);
-                }
-            }
-            //Creamos los datos con el personal que nos traemos de la base de datos
-            sldap.setUsername(username);
-            sldap.setHistoric(true);
-            sldap.setRole(TypeRole.PHARMACIST);
-            sldap.setTag("");
-
-            //Miramos si la persona esta en la base de datos
-            if (usern.isEmpty()) {
-                //No esta dada de alta en la base de datos, devolemos los datos del LDAP
-                return sldap;
-            } else {
-                //El personal ya ha sido dado de alta anteriormente en la base de datos
-                if (usern.get(0).isHistoric()) {
-                    sl.setName(usern.get(0).getName());
-                    sl.setSurname1(usern.get(0).getSurname1());
-                    sl.setSurname2(usern.get(0).getSurname2());
-                    sl.setUsername(username);
-                    sl.setRole(usern.get(0).getRole());
-                    sl.setTag(usern.get(0).getTag());
-                    return sl;
-                } else {
-                    throw new Exception("Personal ya existente en la Aplicación");
-                }
-            }
-            
-        }
-        if (sldap != null){
-            return sldap;
-        } else {
-            return sl;
-        }
-    }
+//    public Staff check(String adminuser,String password,String username) throws Exception{
+//        
+//        Staff sldap = new Staff();
+//        Staff sl = new Staff();
+//        //Busco en la base de datos si esta dado de alta ya en la base de datos
+//        List<Staff> usern = this.findByUsername(username);
+//        //Traigo la información del personal del LDAP.
+//        Map userValues = null;
+//        try {
+//            userValues = authentication.getUserInformation(adminuser, password, username);        
+//        } catch (LDAPException ex) {
+//            throw ex;
+//        }
+//        //Obtengo los datos de la persona
+//        if (userValues != null) {
+//            if (userValues.containsKey("sn")) {
+//                String[] aux = (String[]) userValues.get("sn");
+//                for (String a : aux) {
+//                    sldap.setSurname1(a);
+//                }
+//            }
+//            if (userValues.containsKey("givenName")) {
+//                String[] aux = (String[]) userValues.get("givenName");
+//                for (String a : aux) {
+//                    sldap.setName(a);
+//                }
+//            }
+//            //Creamos los datos con el personal que nos traemos de la base de datos
+//            sldap.setUsername(username);
+//            sldap.setHistoric(true);
+//            sldap.setRole(TypeRole.PHARMACIST);
+//            sldap.setTag("");
+//
+//            //Miramos si la persona esta en la base de datos
+//            if (usern.isEmpty()) {
+//                //No esta dada de alta en la base de datos, devolemos los datos del LDAP
+//                return sldap;
+//            } else {
+//                //El personal ya ha sido dado de alta anteriormente en la base de datos
+//                if (usern.get(0).isHistoric()) {
+//                    sl.setName(usern.get(0).getName());
+//                    sl.setSurname1(usern.get(0).getSurname1());
+//                    sl.setSurname2(usern.get(0).getSurname2());
+//                    sl.setUsername(username);
+//                    sl.setRole(usern.get(0).getRole());
+//                    sl.setTag(usern.get(0).getTag());
+//                    return sl;
+//                } else {
+//                    throw new Exception("Personal ya existente en la Aplicación");
+//                }
+//            }
+//            
+//        }
+//        if (sldap != null){
+//            return sldap;
+//        } else {
+//            return sl;
+//        }
+//    }
 
 
 }

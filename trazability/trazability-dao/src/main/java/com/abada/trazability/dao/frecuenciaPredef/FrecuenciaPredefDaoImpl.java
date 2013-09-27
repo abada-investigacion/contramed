@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad {@link FrecuenciaPredef}. Trabaja con los datos de las distintas frecuencias.
  */
-@Repository("frecuenciaPredefDao")
+//@Repository("frecuenciaPredefDao")
 public class FrecuenciaPredefDaoImpl extends JpaDaoUtils implements FrecuenciaPredefDao {
 
     @PersistenceContext(unitName = "trazabilityPU")

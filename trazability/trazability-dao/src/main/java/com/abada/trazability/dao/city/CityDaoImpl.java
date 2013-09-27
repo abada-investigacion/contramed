@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad City, datos de la ciudad
  */
-@Repository("cityDao")
+//@Repository("cityDao")
 public class CityDaoImpl extends JpaDaoUtils implements CityDao {
 
     @PersistenceContext(unitName = "trazabilityPU")

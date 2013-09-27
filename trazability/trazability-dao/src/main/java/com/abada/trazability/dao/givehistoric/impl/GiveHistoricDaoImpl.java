@@ -25,7 +25,6 @@ package com.abada.trazability.dao.givehistoric.impl;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.abada.trazability.dao.givehistoric.GiveHistoricDao;
 import com.abada.trazability.entity.GivesHistoric;
 import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
@@ -40,45 +39,48 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("giveHistoricDao")
+//@Repository("giveHistoricDao")
 public class GiveHistoricDaoImpl extends JpaDaoUtils implements GiveHistoricDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;
 
     /**
-     * Devuelve el numero de resultados que coinciden en el hisrtorial de Administración
-     * con los filtros que se pasan
+     * Devuelve el numero de resultados que coinciden en el hisrtorial de
+     * Administración con los filtros que se pasan
+     *
      * @param filters filtros para la JPQL
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public Long loadGiveHistoricSizeAll(GridRequest filters) {
-        List<Long> result = this.find(this.entityManager,"select count(*) from GivesHistoric gi " + filters.getQL("gi", true), filters.getParamsValues());
+        List<Long> result = this.find(this.entityManager, "select count(*) from GivesHistoric gi " + filters.getQL("gi", true), filters.getParamsValues());
         return result.get(0);
     }
 
     /**
-     * Devuelve los resultados paginados que coinciden en el hisrtorial de Administración
-     * con los filtros que se pasan
+     * Devuelve los resultados paginados que coinciden en el hisrtorial de
+     * Administración con los filtros que se pasan
+     *
      * @param filters filtros para la JPQL
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<GivesHistoric> loadGiveHistoricAll(GridRequest filters) {
-        return this.find(this.entityManager,"from GivesHistoric gi " + filters.getQL("gi", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+        return this.find(this.entityManager, "from GivesHistoric gi " + filters.getQL("gi", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public long loadGiveHistoricAllPrecisaCount(GridRequest filters) {
-        List<Long> result =this.find(this.entityManager,"select count(*) from GivesHistoric gi where gi.orderTimingIdorderTiming in (select idorderTiming from OrderTiming o where (o.ifNecesary = TRUE OR o.repetitionPattern = 'SP')) " + filters.getQL("gi", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
-        if (result!=null && !result.isEmpty())
+        List<Long> result = this.find(this.entityManager, "select count(*) from GivesHistoric gi where gi.orderTimingIdorderTiming in (select idorderTiming from OrderTiming o where (o.ifNecesary = TRUE OR o.repetitionPattern = 'SP')) " + filters.getQL("gi", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+        if (result != null && !result.isEmpty()) {
             return result.get(0);
+        }
         return Long.MIN_VALUE;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<GivesHistoric> loadGiveHistoricAllPrecisa(GridRequest filters) {
-        return this.find(this.entityManager,"from GivesHistoric gi where gi.orderTimingIdorderTiming in (select idorderTiming from OrderTiming o where (o.ifNecesary = TRUE OR o.repetitionPattern = 'SP')) " + filters.getQL("gi", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+        return this.find(this.entityManager, "from GivesHistoric gi where gi.orderTimingIdorderTiming in (select idorderTiming from OrderTiming o where (o.ifNecesary = TRUE OR o.repetitionPattern = 'SP')) " + filters.getQL("gi", false), filters.getParamsValues(), filters.getStart(), filters.getLimit());
     }
 }

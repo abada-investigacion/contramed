@@ -27,7 +27,7 @@ package com.abada.trazability.entity.temp;
  * #L%
  */
 
-import com.abada.contramed.persistence.entity.Patient;
+import com.abada.trazability.entity.Patient;
 
 /**
  *

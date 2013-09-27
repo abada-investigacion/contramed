@@ -71,7 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("managerThreatmentDao")
+//@Repository("managerThreatmentDao")
 public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThreatmentDao, GiveThreatmentDao {
 
     @Resource(name = "threatmentDao")
@@ -103,7 +103,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param endDate Fecha de fin de rango de la toma
      * @param staff Personal del hospital que administra la dosis
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void giveAll(Patient patient, Date startDate, Date endDate, Staff staff, TypeGetPatient typeGetPatient) throws WebContramedException {
         giveDose(null, patient, startDate, endDate, staff, TypeGivesHistoric.FORCED, typeGetPatient);
     }
@@ -120,7 +120,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param observations Observaciones escritas por parte del personal hospitalario
      * @throws WebContramedException posible excepcion si no se puede administrar la dosis por alguna razon
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void giveDose(Long idDose, Patient patient, Date startDate, Date endDate, Staff staff, TypeGivesHistoric typeGivesHistoric, TypeGetPatient typeGetPatient, String... observations) throws WebContramedException {
         OrderTimingInfo info = null;
         Dose dose = null;
@@ -189,7 +189,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param staff Personal del hospital que retira la dosis
      * @param observations Observaciones escritas por parte del personal hospitalario
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void removeDoseNursing(Long idDose, Patient patient, Date startDate, Date endDate, Staff staff, TypeGetPatient typeGetPatient, String... observations) throws WebContramedException {
         OrderTimingInfo info = null;
         Dose dose = null;
@@ -233,7 +233,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param staff Personal del hospital que retira la dosis
      * @param observations Observaciones escritas por parte del personal hospitalario
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void removeDosePharmacy(Long idDose, Patient patient, Date startDate, Date endDate, Staff staff, String... observations) throws WebContramedException {
         OrderTimingInfo info = null;
         Dose dose = null;
@@ -266,7 +266,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param staff Personal del hospital que prepara la dosis
      * @throws WebContramedException posible excepcion si no se puede preparar la dosis por alguna razon
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void prepareAll(Patient patient, Date startDate, Date endDate, Staff staff) throws WebContramedException {
         try {
             this.monitor3.lock();
@@ -305,7 +305,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param observations Observaciones escritas por parte del personal hospitalario
      * @throws WebContramedException posible excepcion si no se puede preparar la dosis por alguna razon
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void prepareDose(Long idDose, Patient patient, Date startDate, Date endDate, Staff staff, String... observations) throws WebContramedException {
         OrderTimingInfo info = null;
         Dose dose = null;
@@ -345,7 +345,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param dose
      * @param staff
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void createPrepareHistoric(OrderTimingInfo info, TypePrepareHistoric typePrepareHistoric, Dose dose, Staff staff, String... observations) throws RangeTimeOutException {
 
         Date now = new Date();
@@ -375,7 +375,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param dose
      * @param staff
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void createGiveHistoric(OrderTimingInfo info, Dose dose, Staff staff, Patient patient, TypeGetPatient typeGetPatient, String... observations) throws RangeTimeOutException {
         TypeGivesHistoric typeGivesHistoric;
         if (info.isEquivalent()) {
@@ -392,7 +392,7 @@ public class ManagerThreatmentDaoImpl extends JpaDaoUtils implements PrepareThre
      * @param dose
      * @param staff
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void createGiveHistoric(OrderTimingInfo info, Dose dose, Staff staff, TypeGivesHistoric typeGivesHistoric, Patient patient, TypeGetPatient typeGetPatient, String... observations) throws RangeTimeOutException {
 
         Date now = new Date();

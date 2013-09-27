@@ -46,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad {@link Dose}. Trabaja con los datos de las distintas dosis.
  */
-@Repository("doseDao")
+//@Repository("doseDao")
 public class DoseDaoImpl extends JpaDaoUtils implements DoseDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
@@ -84,7 +84,7 @@ public class DoseDaoImpl extends JpaDaoUtils implements DoseDao {
      * @param give_amount Cantidad de administracion de una dosis
      * @param idmeasure_unit  Unidad de medida de una dosis
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void insertDose(String codigo, String batch, Date expiration_date, BigDecimal give_amount, Integer idmeasure_unit) throws Exception {
         this.insertPrintDose(codigo, batch, expiration_date, give_amount, idmeasure_unit);
@@ -98,7 +98,7 @@ public class DoseDaoImpl extends JpaDaoUtils implements DoseDao {
      * @param give_amount Cantidad de administracion de una dosis
      * @param idmeasure_unit  Unidad de medida de una dosis
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public Dose insertPrintDose(String codigo, String batch, Date expiration_date, BigDecimal give_amount, Integer idmeasure_unit) throws Exception {
 
@@ -134,7 +134,7 @@ public class DoseDaoImpl extends JpaDaoUtils implements DoseDao {
      * @param give_amount Cantidad de administracion de una dosis
      * @param idmeasure_unit  Unidad de medida de una dosis
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updateDose(Long iddose, String codigo, String batch, Date expiration_date, BigDecimal give_amount, Integer idmeasure_unit) throws Exception {
 

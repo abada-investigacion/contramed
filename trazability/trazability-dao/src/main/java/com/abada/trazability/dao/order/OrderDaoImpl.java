@@ -60,7 +60,7 @@ import org.springframework.stereotype.Repository;
  *
  * Dao de la entidad Order, trabajamos con datos de tramientos
  */
-@Repository("orderDao")
+//@Repository("orderDao")
 public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
 
     private PatientDao patientDao;
@@ -133,7 +133,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void controlOrder(Order1 order, Patient patient) throws HL7Exception {
         Order1 orderbd;
         if (order.getOrderId() != null) {
@@ -246,7 +246,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void save(Order1 order, Patient patient) throws HL7Exception {
         int a;
         if(order.getOrderId().equals("17724_1231_5"))
@@ -297,7 +297,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param order
      * @param orderbd
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void orderAmplify(Order1 order, Order1 orderbd) throws HL7Exception {
 
         if (orderbd != null) {
@@ -346,7 +346,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @return {@link Order1}
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private Order1 findOrderPresent(Order1 order) throws HL7Exception {
         Order1 orderpresent = null;
         if (order.getOrderId() != null) {
@@ -369,7 +369,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param orderoriginal
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void update(Order1 order, Patient patient, Order1 orderoriginalbd) throws HL7Exception {
         if (order.getControl() != null) {
             List<Table0119> ltable0119 = table0119Dao.findByCode(order.getControl().getCode());
@@ -445,7 +445,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param ordermedicationbd
      * @param ordermedication
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void deleteInstruObserorderMedication(OrderMedication ordermedicationbd) {
              for (OrderMedicationInstruction o : ordermedicationbd.getOrderMedicationInstructionList()) {
                 this.entityManager.remove(o);
@@ -461,7 +461,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param order
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void orderCancel(Order1 order) throws HL7Exception {
         //cambiamos el codigo de control a CA id 2
         List<Table0119> table0119 = table0119Dao.findByCode("CA");
@@ -484,7 +484,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      *
      * @param orderTimingList
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private boolean orderTimingbd(OrderTiming orderTiming) throws HL7Exception {
         boolean error = false;
         //vamos por id de measureUnit en nuestra base de datos
@@ -513,7 +513,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param measureUnit
      * @return
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private MeasureUnit measureUnit(MeasureUnit measureUnit) {
         List<MeasureUnit> lmeasureUnits = new ArrayList();
         if (measureUnit.getIdmeasureUnit() != null) {
@@ -533,7 +533,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * necesitamos para orderMedication
      * @param orderMedication
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void orderMedication(OrderMedication orderMedication) throws HL7Exception {
         //no puede superar este valor
         if (orderMedication.getGiveAmount().intValue() > 9999999) {
@@ -588,7 +588,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * Congelamos la order poniendola a historica
      * @param order
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void orderStop(Order1 order) throws HL7Exception {
         List<Table0119> table0119 = table0119Dao.findByCode("HD");
         if (table0119 != null && table0119.size() == 1) {
@@ -605,7 +605,7 @@ public class OrderDaoImpl extends JpaDaoUtils implements OrderDao {
      * @param order
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void orderFree(Order1 order) throws HL7Exception {
         order.setHistoric(false);
     }

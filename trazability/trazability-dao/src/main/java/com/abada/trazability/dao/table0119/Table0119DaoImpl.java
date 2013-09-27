@@ -22,14 +22,12 @@ package com.abada.trazability.dao.table0119;
  * #L%
  */
 
+import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
 import com.abada.trazability.entity.Table0119;
-import org.springframework.orm.jpa.support.JpaDaoUtils;
 import org.springframework.stereotype.Repository;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -40,17 +38,10 @@ import org.springframework.transaction.annotation.Transactional;
  * tipos de codigos de control de los tratamientos
  *
  */
-@Repository("table0119Dao")
+//@Repository("table0119Dao")
 public class Table0119DaoImpl extends JpaDaoUtils implements Table0119Dao {
-
-    /**
-     *
-     * @param entityManagerFactory
-     */
-    @Resource(name = "entityManager")
-    public void setEntityManagerFactory2(EntityManagerFactory entityManagerFactory) {
-        setEntityManagerFactory(entityManagerFactory);
-    }
+    @PersistenceContext(unitName = "trazabilityPU")
+    private EntityManager entityManager;
 
     /**
      *obtenemos la lista de Table0119 a partir de code
@@ -60,9 +51,7 @@ public class Table0119DaoImpl extends JpaDaoUtils implements Table0119Dao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Table0119> findByCode(String code) {
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("code", code);
-        return this.entityManager.findByNamedQueryAndNamedParams("Table0119.findByCode", parametros);
+        return this.entityManager.createNamedQuery("Table0119.findByCode").setParameter("code", code).getResultList();
     }
 }
 

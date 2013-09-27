@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("loginDao")
+//@Repository("loginDao")
 public class LoginDaoImpl implements LoginDao {
 
     @PersistenceContext(unitName = "trazabilityPU")

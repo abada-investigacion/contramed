@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad Recurso, trabajamos con los datos de la cama y Recurso
  */
-@Repository("recursoDao")
+//@Repository("recursoDao")
 public class RecursoDaoImpl extends JpaDaoUtils implements RecursoDao {
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;

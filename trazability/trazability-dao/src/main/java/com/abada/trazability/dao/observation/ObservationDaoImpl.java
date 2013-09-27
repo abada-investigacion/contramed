@@ -44,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author maria
  */
 
-@Repository("observationDao")
+//@Repository("observationDao")
 public class ObservationDaoImpl extends JpaDaoUtils implements ObservationDao{
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;
@@ -61,7 +61,7 @@ public class ObservationDaoImpl extends JpaDaoUtils implements ObservationDao{
        return this.find(this.entityManager,"from Observation o" + filters.getQL("o", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
         
     }
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void insert(Date eventTime,String observation, Long patient,Long staff){
          
         Observation ob = new Observation();

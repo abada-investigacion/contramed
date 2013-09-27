@@ -22,14 +22,12 @@ package com.abada.trazability.dao.table0162;
  * #L%
  */
 
+import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
 import com.abada.trazability.entity.Table0162;
-import org.springframework.orm.jpa.support.JpaDaoUtils;
 import org.springframework.stereotype.Repository;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,17 +37,11 @@ import org.springframework.transaction.annotation.Transactional;
  * Dao de la entidad table0162 , trabajamos con los datos de las distintas
  * vias de administración de medicación
  */
-@Repository("table0162Dao")
+//@Repository("table0162Dao")
 public class Table0162DaoImpl extends JpaDaoUtils implements Table0162Dao {
+    @PersistenceContext(unitName = "trazabilityPU")
+    private EntityManager entityManager;
 
-    /**
-     *
-     * @param entityManagerFactory
-     */
-    @Resource(name = "entityManager")
-    public void setEntityManagerFactory2(EntityManagerFactory entityManagerFactory) {
-        setEntityManagerFactory(entityManagerFactory);
-    }
 
     /**
      *obtenemos la lista de todos los Table0162
@@ -58,7 +50,7 @@ public class Table0162DaoImpl extends JpaDaoUtils implements Table0162Dao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Table0162> findAll() {
-        return this.entityManager.find("SELECT t FROM Table0162 t ORDER BY Details ASC");
+        return this.entityManager.createQuery("SELECT t FROM Table0162 t ORDER BY Details ASC").getResultList();
     }
 
     /**
@@ -69,9 +61,7 @@ public class Table0162DaoImpl extends JpaDaoUtils implements Table0162Dao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Table0162> findByCode(String code) {
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("code", code);
-        return this.entityManager.findByNamedQueryAndNamedParams("Table0162.findByCode", parametros);
+        return this.entityManager.createNamedQuery("Table0162.findByCode").setParameter("code", code).getResultList();
     }
 
     /**
@@ -82,9 +72,7 @@ public class Table0162DaoImpl extends JpaDaoUtils implements Table0162Dao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Table0162> findByDetails(String details) {
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("details", details);
-        return this.entityManager.findByNamedQueryAndNamedParams("Table0162.findByDetails", parametros);
+        return this.entityManager.createNamedQuery("Table0162.findByDetails").setParameter("details", details).getResultList();
     }
 }
 

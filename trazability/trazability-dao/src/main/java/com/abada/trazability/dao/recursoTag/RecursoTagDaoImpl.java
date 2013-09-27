@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad RecursoTag, trabajamos con los datos de la cama y el tag
  */
-@Repository("recursoTagDao")
+//@Repository("recursoTagDao")
 public class RecursoTagDaoImpl extends JpaDaoUtils implements RecursoTagDao {
 
     private RecursoDao recursoDao;
@@ -97,7 +97,7 @@ public class RecursoTagDaoImpl extends JpaDaoUtils implements RecursoTagDao {
      * @param idrecurso
      * @return boolean
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public boolean save(String tag, Long idrecurso) {
         RecursoTag rt = new RecursoTag();
@@ -120,7 +120,7 @@ public class RecursoTagDaoImpl extends JpaDaoUtils implements RecursoTagDao {
      * @param idrecursoOrigen
      * @param tagorigen
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void update(RecursoTag recursoTag, Long idrecursoOrigen, String tagorigen) {
         List<RecursoTag> recursoTagorigen = findByRecursotag(idrecursoOrigen, tagorigen);
@@ -133,7 +133,7 @@ public class RecursoTagDaoImpl extends JpaDaoUtils implements RecursoTagDao {
     /**
      *borrado de un RecursoTag
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void delete(Long id) {
         RecursoTag r = this.entityManager.find(RecursoTag.class, id);

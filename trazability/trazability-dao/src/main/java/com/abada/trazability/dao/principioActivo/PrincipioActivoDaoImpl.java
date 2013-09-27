@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author mmartin
  */
-@Repository("principioActivoDao")
+//@Repository("principioActivoDao")
 public class PrincipioActivoDaoImpl extends JpaDaoUtils implements PrincipioActivoDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
@@ -119,7 +119,7 @@ public class PrincipioActivoDaoImpl extends JpaDaoUtils implements PrincipioActi
      * @param aditivo
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void insertPrincipioActivo(String codigo, String nombre, String anulado, String codigo_ca, String composicion,
             String denominacion, String formula, String peso, String dosis, String dosis_superficie, String dosis_peso, String u_dosis,
@@ -180,7 +180,7 @@ public class PrincipioActivoDaoImpl extends JpaDaoUtils implements PrincipioActi
      * @param aditivo
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updatePrincipioActivo(final String codigo, final String oldcodigo, String nombre, String anulado, String codigo_ca, String composicion,
             String denominacion, String formula, String peso, String dosis, String dosis_superficie, String dosis_peso, String u_dosis,
@@ -225,7 +225,7 @@ public class PrincipioActivoDaoImpl extends JpaDaoUtils implements PrincipioActi
      * Borra un {@link PrincipioActivo} a partir del identificador recibido <br/>
      * @param id
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void delete(String id) {
         PrincipioActivo pa = this.entityManager.find(PrincipioActivo.class, id);

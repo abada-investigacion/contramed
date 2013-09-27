@@ -60,7 +60,7 @@ import org.springframework.stereotype.Repository;
  *
  * Dao de la entidad Patient, trabajamos con los datos del paciente
  */
-@Repository("patientDao")
+//@Repository("patientDao")
 public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
 
     private CityDao cityDao;
@@ -142,7 +142,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void save(Patient patient) throws HL7Exception {
         //TODO si el paciente viene su exitus a null le decimos que esta vivo
@@ -214,7 +214,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * borramos un paciente a partir de su lista de id
      * @param patient
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void deletepatientId(List<PatientId> patientIds) throws HL7Exception {
         delete(patientIdDao.findPatients(patientIds));
 
@@ -224,7 +224,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * borramos un paciente
      * @param patient
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void delete(List<Patient> patient) throws HL7Exception {
         if (patient != null && patient.size() == 1) {
             Patient oldPatient = patient.get(0);
@@ -244,7 +244,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
     /**
      * borramos todos los pacientes
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void deleteAll() {
         List<Patient> lpatient = this.entityManager.createNamedQuery("Patient.findAll").getResultList();
@@ -267,7 +267,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param bed
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updatebed(Patient patient) throws HL7Exception {
         List<Recurso> rs;
@@ -301,7 +301,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param bed
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void update(Patient patient, boolean bed) throws HL7Exception {
         List<Patient> patients = findPatients(patient);
@@ -321,7 +321,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param oldPatientIds
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void merge(Patient patient, List<PatientId> oldPatientIds) throws HL7Exception {
         List<Patient> newPatients = findPatients(patient);
@@ -354,7 +354,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patientIds
      * @param exitus
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void deleteexitus(List<PatientId> patientIds, boolean exitus) throws HL7Exception {
         delete(patientIdDao.findPatienstExitus(patientIds, exitus));
     }
@@ -367,7 +367,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param updateid
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updateId(Patient patientchange, List<PatientId> patientsId, boolean updateid)
             throws HL7Exception {
@@ -401,7 +401,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @return
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void updatePatientId(List<PatientId> patientsIdChanges, Patient p, boolean updatepatientid)
             throws HL7Exception {
         boolean add, update = false;
@@ -470,7 +470,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void updatePatientname(Patient original, Patient changes) throws HL7Exception {
         if (changes.getName() != null) {
             original.setName(changes.getName());
@@ -489,7 +489,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void updatePatientInformation(Patient original, Patient changes) throws HL7Exception {
 
         if (changes.getExitus() != null) {
@@ -534,7 +534,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * intercambio de 2 camas dado dos pacientes
      * @param patients
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void swapBed(List<Patient> patients) throws HL7Exception {
         if (patients.size() > 1) {
             List<Patient> lp1 = findPatients(patients.get(0));
@@ -570,7 +570,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void TransferBed(Patient patient) throws HL7Exception {
         bedPatient(patient);
         List<Patient> lpatient = findPatients(patient);
@@ -595,7 +595,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void alta(Patient patient) throws HL7Exception {
         List<Patient> lpatient = findPatients(patient);
         if (lpatient != null && lpatient.size() == 1) {
@@ -612,7 +612,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void cancelAlta(Patient patient) throws HL7Exception {
         bedPatient(patient);
         List<Patient> lpatient = findPatients(patient);
@@ -635,7 +635,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void admission(Patient patient) throws HL7Exception {
         bedPatient(patient);
         List<Patient> lpatient = findPatients(patient);
@@ -658,7 +658,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void cancelAdmission(Patient patient) throws HL7Exception {
         List<Patient> lpatient = findPatients(patient);
         if (lpatient != null && lpatient.size() == 1) {
@@ -698,7 +698,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param original
      * @param changes
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void addtelefono(Patient original, Patient changes) {
         if (original.getTelephoneList() != null && changes.getTelephoneList() != null) {
             List<Telephone> lTelephonenew = changes.getTelephoneList();
@@ -725,7 +725,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param original
      * @param changes
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void addAdress(Patient original, Patient changes) {
         if (original.getAddressList() != null && changes.getAddressList() != null) {
             List<Address> laddressnew = changes.getAddressList();
@@ -788,7 +788,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @return List {@link Patient}
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public List<Patient> findPatients(Patient patient) throws HL7Exception {
         List<Patient> patients = null;
@@ -812,7 +812,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @return {@link Patient}
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void bedPatient(Patient patient) throws HL7Exception {
         if (patient.getBed() != null && patient.getBed().getNr() != null && !"".equals(patient.getBed().getNr())) {
             Patient p = getPatientInBed(patient.getBed().getNr());
@@ -846,7 +846,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void genrePatient(Patient patient) throws HL7Exception {
         if (patient.getGenre().getCode() != null && !"".equals(patient.getGenre().getCode())) {
             List<Table0001> lgenero = table0001Dao.findByCode(patient.getGenre().getCode());
@@ -869,7 +869,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void cityAddress(Patient patient) throws HL7Exception {
         if (patient.getAddressList() != null) {
             if (!patient.getAddressList().isEmpty()) {
@@ -908,7 +908,7 @@ public class PatientDaoImpl extends JpaDaoUtils implements PatientDao {
      * @param patient
      * @throws HL7Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     private void maritalStatus(Patient patient) throws HL7Exception {
         if (patient.getMaritalStatus().getCode() != null && !"".equals(patient.getMaritalStatus().getCode())) {
             List<Table0002> lestadocivil = table0002Dao.findByCode(patient.getMaritalStatus().getCode());

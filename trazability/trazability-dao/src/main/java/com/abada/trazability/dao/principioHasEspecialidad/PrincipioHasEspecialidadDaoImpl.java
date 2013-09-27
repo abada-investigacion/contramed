@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author mmartin
  */
-@Repository("principioHasEspecialidadDao")
+//@Repository("principioHasEspecialidadDao")
 public class PrincipioHasEspecialidadDaoImpl extends JpaDaoUtils implements PrincipioHasEspecialidadDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
@@ -123,7 +123,7 @@ public class PrincipioHasEspecialidadDaoImpl extends JpaDaoUtils implements Prin
      * @param id_unidad
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void insertPrincipioHasEspecialidad(String codigoespec, String codigoprincipio, Long id, String composicion, String id_unidad) throws Exception {
 
@@ -161,7 +161,7 @@ public class PrincipioHasEspecialidadDaoImpl extends JpaDaoUtils implements Prin
      * @param id_unidad
      * @throws Exception
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updatePrincipioHasEspecialidad(final Long oldid, String oldcodigoespec, String codigoespec, String codigoprincipio, final Long id, String composicion, String id_unidad) throws Exception {
 
@@ -202,7 +202,7 @@ public class PrincipioHasEspecialidadDaoImpl extends JpaDaoUtils implements Prin
      * Borra {@link PrincipioHasEspecialidad} a partir del identificador recibido <br/>
      * @param id
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void delete(Long id) {
         PrincipioHasEspecialidad phe = this.entityManager.find(PrincipioHasEspecialidad.class, id);

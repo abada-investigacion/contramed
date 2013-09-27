@@ -22,14 +22,12 @@ package com.abada.trazability.dao.tablez029;
  * #L%
  */
 
+import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
 import com.abada.trazability.entity.Tablez029;
-import org.springframework.orm.jpa.support.JpaDaoUtils;
 import org.springframework.stereotype.Repository;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,18 +37,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Dao de la entidad tablez029 , trabajamos con los datos de los distintos
  * Id de un paciente
  */
-@Repository("tablez029Dao")
+//@Repository("tablez029Dao")
 public class Tablez029DaoImpl extends JpaDaoUtils implements Tablez029Dao {
-
-    /**
-     * 
-     * @param entityManagerFactory
-     */
-    @Resource(name = "entityManager")
-    public void setEntityManagerFactory2(EntityManagerFactory entityManagerFactory) {
-        setEntityManagerFactory(entityManagerFactory);
-    }
-
+    @PersistenceContext(unitName = "trazabilityPU")
+    private EntityManager entityManager;
     /**
      *obtenemos la lista de todos los Tablez029
      * @return List {@link Tablez029}
@@ -58,7 +48,7 @@ public class Tablez029DaoImpl extends JpaDaoUtils implements Tablez029Dao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Tablez029> findAll() {
-        return this.entityManager.findByNamedQuery("Tablez029.findAll");
+        return this.entityManager.createNamedQuery("Tablez029.findAll").getResultList();
     }
 
     /**
@@ -69,9 +59,7 @@ public class Tablez029DaoImpl extends JpaDaoUtils implements Tablez029Dao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<Tablez029> findByCode(String code) {
-        Map<String, String> parametros = new HashMap<String, String>();
-        parametros.put("code", code);
-        return this.entityManager.findByNamedQueryAndNamedParams("Tablez029.findByCode", parametros);
+        return this.entityManager.createNamedQuery("Tablez029.findByCode").setParameter("code", code).getResultList();
     }
 }
 

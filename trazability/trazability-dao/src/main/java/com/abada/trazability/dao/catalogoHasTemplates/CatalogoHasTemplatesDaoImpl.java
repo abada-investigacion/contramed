@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad {@link CatalogoHasTemplates}. Trabaja con el template asignado a cada especialidad
  */
-@Repository("catalogoHasTemplatesDao")
+//@Repository("catalogoHasTemplatesDao")
 public class CatalogoHasTemplatesDaoImpl extends JpaDaoUtils implements CatalogoHasTemplatesDao {
 
     private static final Log logger = LogFactory.getLog(CatalogoHasTemplatesDaoImpl.class);

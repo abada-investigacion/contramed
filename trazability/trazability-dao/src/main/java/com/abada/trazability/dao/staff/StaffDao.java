@@ -105,5 +105,5 @@ public interface StaffDao {
 
 
 
-    public Staff check(String adminuser,String password,String username) throws Exception;
+//    public Staff check(String adminuser,String password,String username) throws Exception;
 }

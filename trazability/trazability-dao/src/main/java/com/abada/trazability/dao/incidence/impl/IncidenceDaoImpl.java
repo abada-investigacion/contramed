@@ -48,14 +48,14 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("incidenceDao")
+//@Repository("incidenceDao")
 public class IncidenceDaoImpl extends JpaDaoUtils implements IncidenceDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;
 
 
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void generateGiveIncidence(Staff staff, Dose dose, Patient patient, Long idOrderTiming, WebContramedException exception) {
         OrderTiming orderTiming = null;
         if (idOrderTiming != null) {
@@ -89,7 +89,7 @@ public class IncidenceDaoImpl extends JpaDaoUtils implements IncidenceDao {
         this.entityManager.persist(givesIncidence);
     }
 
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void generatePrepareIncidence(Staff staff, Dose dose, Patient patient, Long idOrderTiming, WebContramedException exception) {
         OrderTiming orderTiming = null;
         if (idOrderTiming != null) {
@@ -145,7 +145,7 @@ public class IncidenceDaoImpl extends JpaDaoUtils implements IncidenceDao {
         return this.find(this.entityManager,"from PrepareIncidence pi " + filters.getQL("pi", true), filters.getParamsValues(),filters.getStart(), filters.getLimit());
     }
 
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void generateMedicationNotGivenException(Staff staff, Long idDose, Patient patient) {
         Dose dose=this.entityManager.find(Dose.class, idDose);
         if (dose!=null){

@@ -25,7 +25,6 @@ package com.abada.trazability.dao.measureunitconversion;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.abada.trazability.entity.MeasureUnit;
 import com.abada.trazability.entity.MeasureUnitConversion;
 import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
@@ -40,13 +39,13 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("measureUnitConversionDao")
+//@Repository("measureUnitConversionDao")
 public class MeasureUnitConversionImpl extends JpaDaoUtils implements MeasureUnitConversionDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
     private EntityManager entityManager;
 
-    @Transactional(readOnly = false)
+    @Transactional(value = "trazability-txm", readOnly = false)
     @Override
     public MeasureUnitConversion getMeasureUnitConversion(MeasureUnit from, MeasureUnit to) {
         List<MeasureUnitConversion> result = this.entityManager.createQuery("SELECT muc FROM MeasureUnitConversion muc WHERE muc.mu_from=:from AND muc.mu_to=:to ").setParameter("from", from).setParameter("to", to).getResultList();
@@ -56,7 +55,7 @@ public class MeasureUnitConversionImpl extends JpaDaoUtils implements MeasureUni
         return null;
     }
 
-    @Transactional(readOnly = false)
+    @Transactional(value = "trazability-txm", readOnly = false)
     @Override
     public BigDecimal convert(BigDecimal valueFrom, MeasureUnit from, MeasureUnit to) {
         if (from != null && to != null && !from.equals(to)) {

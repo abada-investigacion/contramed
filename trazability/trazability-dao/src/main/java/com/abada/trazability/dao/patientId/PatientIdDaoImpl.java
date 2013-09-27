@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad PatientId, trabajamos con los datos de ids de pacientes
  */
-@Repository("patientIdDao")
+//@Repository("patientIdDao")
 public class PatientIdDaoImpl extends JpaDaoUtils implements PatientIdDao {
 
     private Tablez029Dao tablez029Dao;
@@ -73,7 +73,7 @@ public class PatientIdDaoImpl extends JpaDaoUtils implements PatientIdDao {
      *Añadimos PatientId
      * @param patientId
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void save(PatientId patientId) {
         this.entityManager.persist(patientId);
@@ -84,7 +84,7 @@ public class PatientIdDaoImpl extends JpaDaoUtils implements PatientIdDao {
      * @param patientId
      * @return int
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public int patientIdRepe(List<PatientId> patientId) {
         for (int i = 0; i < patientId.size(); i++) {
@@ -106,7 +106,7 @@ public class PatientIdDaoImpl extends JpaDaoUtils implements PatientIdDao {
      * @param PatientsId
      * @return List {@link PatientId}
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public List<Patient> findPatients(List<PatientId> PatientsId) {
         int append = 0;
@@ -138,7 +138,7 @@ public class PatientIdDaoImpl extends JpaDaoUtils implements PatientIdDao {
      * @param exitus
      * @return List {@link PatientId}
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public List<Patient> findPatienstExitus(List<PatientId> PatientsId, boolean exitus) {
         List<Patient> patientexitus = new ArrayList();

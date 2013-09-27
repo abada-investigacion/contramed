@@ -26,9 +26,9 @@ import com.abada.trazability.entity.TemplatesMedication;
 import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
 import com.abada.springframework.web.servlet.command.extjs.gridpanel.GridRequest;
 import org.springframework.stereotype.Repository;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -37,17 +37,10 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad {@link TemplatesMedication}. Trabaja con los datos de los templates y styles.
  */
-@Repository("templatesMedicationDao")
+//@Repository("templatesMedicationDao")
 public class TemplatesMedicationDaoImpl extends JpaDaoUtils implements TemplatesMedicationDao {
-
-    /**
-     * Constructor
-     * @param entityManagerFactory
-     */
-    @Resource(name = "entityManager")
-    public void setEntityManagerFactory2(EntityManagerFactory entityManagerFactory) {
-        setEntityManagerFactory(entityManagerFactory);
-    }
+    @PersistenceContext(unitName = "trazabilityPU")
+    private EntityManager entityManager;
 
     /**
      * Obtiene el tamaño de {@link TemplatesMedication} a partir del filtro <br/>
@@ -57,7 +50,7 @@ public class TemplatesMedicationDaoImpl extends JpaDaoUtils implements Templates
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public Long loadSizeAll(GridRequest filters) {
-        List<Long> result = this.find("select count(*) from TemplatesMedication t" + filters.getQL("t", true), filters.getParamsValues());
+        List<Long> result = this.find(this.entityManager,"select count(*) from TemplatesMedication t" + filters.getQL("t", true), filters.getParamsValues());
         return result.get(0);
     }
 
@@ -69,7 +62,7 @@ public class TemplatesMedicationDaoImpl extends JpaDaoUtils implements Templates
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<TemplatesMedication> loadAll(GridRequest filters) {
-        List<TemplatesMedication> tempmed = this.find("from TemplatesMedication t" + filters.getQL("t", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+        List<TemplatesMedication> tempmed = this.find(this.entityManager,"from TemplatesMedication t" + filters.getQL("t", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
         return tempmed;
     }
 
@@ -80,7 +73,7 @@ public class TemplatesMedicationDaoImpl extends JpaDaoUtils implements Templates
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<TemplatesMedication> listAll() {
-        List<TemplatesMedication> tempmed = this.entityManager.find("from TemplatesMedication t ORDER BY Template ASC");
+        List<TemplatesMedication> tempmed = this.entityManager.createQuery("from TemplatesMedication t ORDER BY Template ASC").getResultList();
         return tempmed;
     }
 
@@ -90,7 +83,7 @@ public class TemplatesMedicationDaoImpl extends JpaDaoUtils implements Templates
      * @param uuid UUID bajo el que esta almacenado el fichero de plantilla
      * @param uuidStyle UUID bajo el que esta almacenado el fichero de estilos
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void insertTemplate(String template, String uuid, String uuidStyle)throws Exception {
 
@@ -114,7 +107,7 @@ public class TemplatesMedicationDaoImpl extends JpaDaoUtils implements Templates
      * @param uuid UUID bajo el que esta almacenado el fichero de plantilla
      * @param uuidStyle UUID bajo el que esta almacenado el fichero de estilos
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updateTemplatesMedication(Long idtemplatesmedication, String template, String uuid, String uuidStyle) throws Exception {
 

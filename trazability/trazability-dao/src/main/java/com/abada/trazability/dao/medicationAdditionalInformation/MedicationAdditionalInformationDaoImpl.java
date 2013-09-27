@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author mmartin
  */
-@Repository("medicationAdditionalInformationDao")
+//@Repository("medicationAdditionalInformationDao")
 public class MedicationAdditionalInformationDaoImpl extends JpaDaoUtils implements MedicationAdditionalInformationDao {
 
     @PersistenceContext(unitName = "trazabilityPU")

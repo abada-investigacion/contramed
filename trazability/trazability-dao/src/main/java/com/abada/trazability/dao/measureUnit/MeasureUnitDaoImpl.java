@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad MeasureUnit, datos de unidad de medida
  */
-@Repository("measureUnitDao")
+//@Repository("measureUnitDao")
 public class MeasureUnitDaoImpl extends JpaDaoUtils implements MeasureUnitDao {
 
     @PersistenceContext(unitName = "trazabilityPU")

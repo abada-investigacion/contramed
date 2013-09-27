@@ -31,12 +31,10 @@ import com.abada.springframework.orm.jpa.support.JpaDaoUtils;
 import com.abada.springframework.web.servlet.command.extjs.gridpanel.GridRequest;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.HashMap;
-import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -44,17 +42,12 @@ import java.util.Map;
  *
  * Dao de la entidad TimingRange , trabajamos con los datos de las diferentes franjas horarias
  */
-@Repository("TimingRangeDao")
+//@Repository("TimingRangeDao")
 public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
 
-    /**
-     *
-     * @param entityManagerFactory
-     */
-    @Resource(name = "entityManager")
-    public void setEntityManagerFactory2(EntityManagerFactory entityManagerFactory) {
-        setEntityManagerFactory(entityManagerFactory);
-    }
+    @PersistenceContext(unitName = "trazabilityPU")
+    private EntityManager entityManager;
+
 
     /**obtenemos las lista de todos los timingRange
      *obtenemos la lista de todos los TimingRange
@@ -62,7 +55,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
      */
     @Transactional(value="trazability-txm",readOnly = true)
     public List<TimingRange> listTimingRange() {
-        List<TimingRange> result = (List<TimingRange>) this.entityManager.findByNamedQuery("TimingRange.findAll");
+        List<TimingRange> result = (List<TimingRange>) this.entityManager.createNamedQuery("TimingRange.findAll").getResultList();
         return result;
     }
 
@@ -73,7 +66,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
      */
     @Transactional(value="trazability-txm",readOnly = true)
     public Long loadSizeAll(GridRequest filters) {
-        List<Long> result = this.find("select count(*) from TimingRange tr" + filters.getQL("tr", true), filters.getParamsValues());
+        List<Long> result = this.find(this.entityManager,"select count(*) from TimingRange tr" + filters.getQL("tr", true), filters.getParamsValues());
         return result.get(0);
     }
 
@@ -84,7 +77,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
      */
     @Transactional(value="trazability-txm",readOnly = true)
     public List<TimingRange> loadAll(GridRequest filters) {
-        List<TimingRange> timingRange = this.find("from TimingRange tr" + filters.getQL("tr", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
+        List<TimingRange> timingRange = this.find(this.entityManager,"from TimingRange tr" + filters.getQL("tr", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
         return timingRange;
     }
 
@@ -94,7 +87,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
      * @param endTime
      * @param name
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void insertTimingRange(Date startTime, Date endTime, String name) {
         TimingRange tr = new TimingRange();
         tr.setStartTime(startTime);
@@ -110,7 +103,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
      * @param name
      * @param idtimingRange
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void updateTimingRange(Date startTime, Date endTime, String name, Long idtimingRange) {
 
         TimingRange tr = (TimingRange) this.entityManager.find(TimingRange.class, new Long(idtimingRange));
@@ -119,8 +112,6 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
             tr.setEndTime(endTime);
             tr.setStartTime(startTime);
             tr.setName(name);
-            this.entityManager;
-
         }
     }
 
@@ -128,7 +119,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
      * borramos un TimingRange dado su id
      * @param timingRange
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void removeTimingRange(Long timingRange) {
 
         TimingRange tr = (TimingRange) this.entityManager.find(TimingRange.class, new Long(timingRange));
@@ -143,9 +134,7 @@ public class TimingRangeDaoImpl extends JpaDaoUtils implements TimingRangeDao {
     @Transactional(value="trazability-txm",readOnly = true)
     @Override
     public List<TimingRange> findByIdtimingRange(Long idtimingRange) {
-        Map<String, Long> parametros = new HashMap<String, Long>();
-        parametros.put("idtimingRange", idtimingRange);
-        return this.entityManager.findByNamedQueryAndNamedParams("TimingRange.findByIdtimingRange", parametros);
+        return this.entityManager.createNamedQuery("TimingRange.findByIdtimingRange").setParameter("idtimingRange", idtimingRange).getResultList();
     }
 }
 

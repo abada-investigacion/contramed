@@ -43,7 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * Dao de la entidad {@link CatalogoMedicamentos}. Trabaja con los datos de las distintas especialidades
  */
-@Repository("catalogoMedicamentosDao")
+//@Repository("catalogoMedicamentosDao")
 public class CatalogoMedicamentosDaoImpl extends JpaDaoUtils implements CatalogoMedicamentosDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
@@ -118,7 +118,7 @@ public class CatalogoMedicamentosDaoImpl extends JpaDaoUtils implements Catalogo
      * @param aditivo
      * @param dosisDiluyente
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void insertCatalogoMedicamentos(String codigo, String nombre, String anulado, String bioequivalente, Date caducidad,
             String caracteristicas, String codGrupo, String codLab, String conservacion, String dispensacion, String especialControl, Date fechaAlta,
@@ -220,7 +220,7 @@ public class CatalogoMedicamentosDaoImpl extends JpaDaoUtils implements Catalogo
      * @param aditivo
      * @param dosisDiluyente
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void updateCatalogoMedicamentos(final String newcodigo, final String codigo, String nombre, String anulado, String bioequivalente, Date caducidad,
             String caracteristicas, String codGrupo, String codLab, String conservacion, String dispensacion, String especialControl, Date fechaAlta,

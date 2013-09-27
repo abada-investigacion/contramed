@@ -35,7 +35,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author david
  */
-@Repository("patientTagDao")
+//@Repository("patientTagDao")
 public class PatientTagDaoImpl extends JpaDaoUtils implements PatientTagDao {
 
     @PersistenceContext(unitName = "trazabilityPU")
@@ -55,7 +55,7 @@ public class PatientTagDaoImpl extends JpaDaoUtils implements PatientTagDao {
      *Añadimos PatientTag
      * @param PatientTag
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void save(PatientTag patientTag) {
         this.entityManager.persist(patientTag);
@@ -87,7 +87,7 @@ public class PatientTagDaoImpl extends JpaDaoUtils implements PatientTagDao {
      * Inserccion de un nuevo PatientTag
      * @return
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void insertPatientTag( Long idenpati,Patient p,String tag)throws Exception {
         
          PatientTag pat = new PatientTag();
@@ -116,7 +116,7 @@ public class PatientTagDaoImpl extends JpaDaoUtils implements PatientTagDao {
      * Modificacion del Tag de un Patient_id
      * @param pat
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     public void updatePatientTag(PatientTag pat) {
         this.entityManager.merge(pat);
     }
@@ -125,7 +125,7 @@ public class PatientTagDaoImpl extends JpaDaoUtils implements PatientTagDao {
      * Borrar PatientTag
      * @param patientTag
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void removePatientTag(Long patientTag) throws Exception {
         PatientTag pat = this.entityManager.find(PatientTag.class, patientTag);
@@ -142,7 +142,7 @@ public class PatientTagDaoImpl extends JpaDaoUtils implements PatientTagDao {
      * Borrar PatientTag
      * @param patientTag
      */
-    @Transactional
+    @Transactional(value="trazability-txm")
     @Override
     public void removePatientId(Long patientId) {
         PatientTag pat = this.entityManager.find(PatientTag.class, patientId);

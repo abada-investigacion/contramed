@@ -25,7 +25,6 @@ package com.abada.trazability.dao.treatment.impl;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.abada.trazability.dao.measureunitconversion.MeasureUnitConversionDao;
 import com.abada.trazability.dao.treatment.ThreatmentDao;
 import com.abada.trazability.entity.CatalogoMedicamentos;
@@ -47,7 +46,6 @@ import com.abada.trazability.entity.temp.PrescriptionType;
 import com.abada.trazability.entity.temp.ThreatmentInfo;
 import com.abada.trazability.entity.temp.ThreatmentInfoHistoric;
 import com.abada.trazability.entity.temp.ThreatmentInfoStatus;
-import com.abada.trazability.entity.temp.TreatmentActionMode;
 import com.abada.trazability.entity.temp.TypeThreatmentInfoStatus;
 import com.abada.trazability.exception.GenericWebContramedException;
 import com.abada.trazability.exception.WebContramedException;
@@ -57,7 +55,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,21 +65,18 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author katsu
  */
-@Repository("threatmentDao")
+//@Repository("threatmentDao")
 public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
 
     @Resource(name = "messageSource")
     private MessageSource locale;
     @Resource(name = "measureUnitConversionDao")
     private MeasureUnitConversionDao measureUnitConversionDao;
-
-    @Resource(name = "entityManager")
-    public void setEntityManagerFactory2(EntityManagerFactory entityManagerFactory) {
-        setEntityManagerFactory(entityManagerFactory);
-    }
+    @PersistenceContext(unitName = "trazabilityPU")
+    private EntityManager entityManager;
 
 // <editor-fold defaultstate="collapsed" desc="Devuelve los tratamientos">
-    @Transactional(readOnly = true, timeout = 60)
+    @Transactional(value = "trazability-txm", readOnly = true, timeout = 60)
     public List<ThreatmentInfo> getActiveThreatmentByPharmacy(Long idPatient, Date startDate, Date endDate) throws WebContramedException {
         if (idPatient == null) {
             throw new GenericWebContramedException("No se ha seleccionado ning&uacute;n paciente.");
@@ -108,7 +104,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(readOnly = true, timeout = 60)
+    @Transactional(value = "trazability-txm", readOnly = true, timeout = 60)
     public List<ThreatmentInfo> getActiveThreatmentByNursing(Long idPatient, Date startTime, Date endTime) throws WebContramedException {
         if (idPatient == null) {
             throw new GenericWebContramedException("No se ha seleccionado ning&uacute;n paciente.");
@@ -124,12 +120,12 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
 
         }
         /*Date now = new Date();
-        startTime.setDate(now.getDate());
-        endTime.setDate(now.getDate());
-        startTime.setMonth(now.getMonth());
-        endTime.setMonth(now.getMonth());
-        startTime.setYear(now.getYear());
-        endTime.setYear(now.getYear());*/
+         startTime.setDate(now.getDate());
+         endTime.setDate(now.getDate());
+         startTime.setMonth(now.getMonth());
+         endTime.setMonth(now.getMonth());
+         startTime.setYear(now.getYear());
+         endTime.setYear(now.getYear());*/
         //Lo primero es cargar la información de los tramientos
         List<ThreatmentInfo> result = this.getActiveThreatment(idPatient, startTime, endTime);
         //Marcar como administrada la dosis
@@ -137,14 +133,14 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private List<ThreatmentInfo> getActiveThreatment(Long idPatient, Date startTime, Date endTime) throws WebContramedException {
         StringBuilder sql = new StringBuilder("from OrderTiming ot where ");//De la tabla orderTiming
         sql.append("ot.historic = FALSE");//No es una orden antigua
-        sql.append(" and ot.orderIdorder.patientId.id = ?");//del paciente correcto
+        sql.append(" and ot.orderIdorder.patientId.id = :id");//del paciente correcto
         sql.append(" and ot.orderIdorder.historic = FALSE");//Y que la orden no sea antigua
         sql.append(" and ot.orderIdorder.control.code IS NOT 'HD'");//Y que la orden no sea antigua
-        List<OrderTiming> ordersTiming = this.entityManager.find(sql.toString(), idPatient);
+        List<OrderTiming> ordersTiming = this.entityManager.createQuery(sql.toString()).setParameter("id", idPatient).getResultList();
         if (ordersTiming != null) {
             List<ThreatmentInfo> result = generateThreatmentInfoByDate(ordersTiming, startTime, endTime);
             return result;
@@ -153,11 +149,13 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
     }
 
     /**
-     * Devuelve la informacion de cada una de las tomas que se deben administrar en el periodo seleccionado.
+     * Devuelve la informacion de cada una de las tomas que se deben administrar
+     * en el periodo seleccionado.
+     *
      * @param ordersTiming
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private List<ThreatmentInfo> generateThreatmentInfoByDate(List<OrderTiming> ordersTiming, Date startTime, Date endTime) throws WebContramedException {
         List<ThreatmentInfo> result = new ArrayList<ThreatmentInfo>();
         //Calculamos los dias que hay entre el comienzo y el fin del rango
@@ -170,8 +168,8 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
             for (RangeItem ri : auxRange) {
                 if ((giveDate = isInDate(ot, ri.getStartTime(), ri.getEndTime())) == null) {
                     /*if (ifOrderTimingNecesary(ot)){
-                    giveDate=new Date();
-                    }*/
+                     giveDate=new Date();
+                     }*/
                 }
                 if (giveDate != null) {
                     ThreatmentInfo aux = generateThreatmentInfo(ot, giveDate);
@@ -188,7 +186,9 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
     }
 
     /**
-     * Usado para filtrar el numero de si precisas del mismo medicamento, con la misma cantidad que aparecen mostrados.
+     * Usado para filtrar el numero de si precisas del mismo medicamento, con la
+     * misma cantidad que aparecen mostrados.
+     *
      * @param result
      * @param aux
      * @return
@@ -205,12 +205,13 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
     }
 
     /**
-     * Devuelve si un ordertiming se corresponde con el periodo de fecha seleccionado,
-     * el dia de comienzo y fin deben ser el mismo día, aunque pueden tener diferentes horas
+     * Devuelve si un ordertiming se corresponde con el periodo de fecha
+     * seleccionado, el dia de comienzo y fin deben ser el mismo día, aunque
+     * pueden tener diferentes horas
      *
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private Date isInDate(OrderTiming ot, Date startTime, Date endTime) {
         //comprobar que la fecha inicio es correcta
         Date startDate = ot.getStartDate();//primero con la fecha inicio de ordertiming
@@ -262,7 +263,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
             } else {
                 return null;
             }
-        }        
+        }
 
         if (now.before(startTime) || (endTime != null && now.after(endTime))) {
             return null;
@@ -271,14 +272,16 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return now;
     }
 
-    /***
+    /**
+     * *
      * Carga la informacion necesaria sobre un tratamiento
+     *
      * @param ot
      * @param giveDate
      * @return
      * @throws WebContramedException
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private ThreatmentInfo generateThreatmentInfo(OrderTiming ot, Date giveDate) throws WebContramedException {
         ThreatmentInfo result = new ThreatmentInfo();
 
@@ -384,19 +387,21 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
 
     /**
      * Return true if ot is necesary or the repetition pattern is SDF
+     *
      * @param ot
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private boolean ifOrderTimingNecesary(OrderTiming ot) {
         return (ot.getIfNecesary() || "SP".equals(ot.getRepetitionPattern()));
     }
 
     /**
      * Genera el estado de la administracion de los tratamientos.
+     *
      * @param result
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private void generateAdministrationStatusByPharmacy(List<ThreatmentInfo> result) {
         for (ThreatmentInfo threatmentInfo : result) {
             generateAdministrationStatusByPharmacy(threatmentInfo);
@@ -407,7 +412,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
      *
      * @param threatmentInfo
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private void generateAdministrationStatusByPharmacy(ThreatmentInfo threatmentInfo) {
         List<PrepareHistoric> historics = getPrepareHistoric(threatmentInfo);
         //sumar las dosis para ver si ya esta
@@ -434,12 +439,13 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
     }
 
     /**
-     * Devuelve los PrepareHistoric que cuentan como añadidos. Elimina
-     * todas las entradas de outbox e inbox que le correspondan
+     * Devuelve los PrepareHistoric que cuentan como añadidos. Elimina todas las
+     * entradas de outbox e inbox que le correspondan
+     *
      * @param threatmentInfo
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<PrepareHistoric> getPrepareHistoric(ThreatmentInfo threatmentInfo) {
         List<PrepareHistoric> aux = getPrepareHistoricInt(threatmentInfo.getIdOrderTiming(), threatmentInfo.getGiveTime());
         List<PrepareHistoric> result = new ArrayList<PrepareHistoric>();
@@ -469,7 +475,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private int getCountPrepareHistoric(List<PrepareHistoric> historics, Long idDose, TypePrepareHistoric typePrepareHistoric) {
         int result = 0;
         for (PrepareHistoric historic : historics) {
@@ -480,7 +486,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private double sumPrepareHistoric(List<PrepareHistoric> historics) {
         //presuponemos que la unidad de medida es la misma en todos
         // TODO Comprobor que todos tienen la misma unidad y que es la misma que la de la ordertiming
@@ -498,14 +504,14 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return total;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private void generateAdministrationStatusByNursing(List<ThreatmentInfo> result) {
         for (ThreatmentInfo threatmentInfo : result) {
             generateAdministrationStatusByNursing(threatmentInfo);
         }
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private void generateAdministrationStatusByNursing(ThreatmentInfo threatmentInfo) {
         short aux;
         List<GivesHistoric> historics = getGivesHistoric(threatmentInfo);
@@ -541,9 +547,9 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         }
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private boolean isLastGivesHistoricTypeOf(Long idOrderTiming, Date giveDate, TypeGivesHistoric type) {
-        List<GivesHistoric> result = this.entityManager.find("from GivesHistoric gh where gh.orderTimingIdorderTiming.idorderTiming = ? and gh.orderTimingDate = ? order by gh.eventDate desc", idOrderTiming, giveDate);//threatmentInfo.getIdOrderTiming(), threatmentInfo.getGiveTime());
+        List<GivesHistoric> result = this.entityManager.createQuery("from GivesHistoric gh where gh.orderTimingIdorderTiming.idorderTiming = :idorderTiming and gh.orderTimingDate = :orderTimingDate order by gh.eventDate desc").setParameter("idorderTiming", idOrderTiming).setParameter("idorderTiming", giveDate).getResultList();//threatmentInfo.getIdOrderTiming(), threatmentInfo.getGiveTime());
         if (result != null && result.size() > 0) {
             return result.get(0).getType().equals(type);
         }
@@ -551,12 +557,13 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
     }
 
     /**
-     * Devuelve los GivesHistoric que cuentan como añadidos y aquellos que no se han administrados desde el principio. Elimina
-     * todas las demás entradas
+     * Devuelve los GivesHistoric que cuentan como añadidos y aquellos que no se
+     * han administrados desde el principio. Elimina todas las demás entradas
+     *
      * @param threatmentInfo
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<GivesHistoric> getGivesHistoric(ThreatmentInfo threatmentInfo) {
         List<GivesHistoric> aux = getGivesHistoricInt(threatmentInfo.getIdOrderTiming(), threatmentInfo.getGiveTime());
         List<GivesHistoric> result = new ArrayList<GivesHistoric>();
@@ -596,12 +603,13 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
 
     /**
      * Cuenta las entradas historicas de un cierto tipo
+     *
      * @param historics
      * @param idDose
      * @param groupType determina el tipo de entradas que debe contar
      * @return
      */
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private int getCountGivesHistoric(List<GivesHistoric> historics, Long idDose, GivesHistoricGroupType groupType) {
         int result = 0;
         for (GivesHistoric historic : historics) {
@@ -609,18 +617,18 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
                 switch (groupType) {
                     case ADD:
                         if (TypeGivesHistoric.isGiven(historic.getType())) {
-                            result++;
-                        }
+                        result++;
+                    }
                         break;
                     case NOT_GIVEN:
                         if (TypeGivesHistoric.isNotGiven(historic.getType())) {
-                            result++;
-                        }
+                        result++;
+                    }
                         break;
                     case REMOVE:
                         if (TypeGivesHistoric.isRemove(historic.getType())) {
-                            result++;
-                        }
+                        result++;
+                    }
                         break;
                 }
             }
@@ -628,18 +636,18 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private List<GivesHistoric> getGivesHistoricInt(Long idOrderTiming, Date giveDate) {
-        List<GivesHistoric> result = this.entityManager.find("from GivesHistoric gh where gh.orderTimingIdorderTiming.idorderTiming = ? and gh.orderTimingDate = ? order by gh.doseIddose.iddose, gh.eventDate desc", idOrderTiming, giveDate);//threatmentInfo.getIdOrderTiming(), threatmentInfo.getGiveTime());
+        List<GivesHistoric> result = this.entityManager.createQuery("from GivesHistoric gh where gh.orderTimingIdorderTiming.idorderTiming = :id and gh.orderTimingDate = :date order by gh.doseIddose.iddose, gh.eventDate desc").setParameter("id", idOrderTiming).setParameter("date", giveDate).getResultList();//threatmentInfo.getIdOrderTiming(), threatmentInfo.getGiveTime());
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private List<PrepareHistoric> getPrepareHistoricInt(Long idOrderTiming, Date giveDate) {
-        return this.entityManager.find("from PrepareHistoric ph where ph.orderTimingIdorderTiming.idorderTiming = ? and ph.orderTimingDate = ? order by ph.doseIddose.iddose, ph.eventDate desc", idOrderTiming, giveDate);
+        return this.entityManager.createQuery("from PrepareHistoric ph where ph.orderTimingIdorderTiming.idorderTiming = :id and ph.orderTimingDate = :date order by ph.doseIddose.iddose, ph.eventDate desc").setParameter("id", idOrderTiming).setParameter("date", giveDate).getResultList();
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private double sumGivesHistoric(List<GivesHistoric> historics) {
         //presuponemos que la unidad de medida es la misma en todos
         // TODO Comprobor que todos tienen la misma unidad y que es la misma que la de la ordertiming
@@ -660,7 +668,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
     }// </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Devuelve historiales">
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<ThreatmentInfoHistoric> getPrepareHistoric(Long idOrderTiming, Date giveDate) {
         List<ThreatmentInfoHistoric> result = new ArrayList<ThreatmentInfoHistoric>();
         ThreatmentInfoHistoric aux;
@@ -678,7 +686,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     public List<ThreatmentInfoHistoric> getGiveHistoric(Long idOrderTiming, Date giveDate) {
         List<ThreatmentInfoHistoric> result = new ArrayList<ThreatmentInfoHistoric>();
         ThreatmentInfoHistoric aux;
@@ -696,7 +704,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private ThreatmentInfoHistoric createThreatmentInfoHistoric(PrepareHistoric ph) {
         ThreatmentInfoHistoric result = new ThreatmentInfoHistoric();
         result.setEventDate(ph.getEventDate());
@@ -718,7 +726,7 @@ public class ThreatmentDaoImpl extends JpaDaoUtils implements ThreatmentDao {
         return result;
     }
 
-    @Transactional(value="trazability-txm",readOnly = true)
+    @Transactional(value = "trazability-txm", readOnly = true)
     private ThreatmentInfoHistoric createThreatmentInfoHistoric(GivesHistoric ph) {
         ThreatmentInfoHistoric result = new ThreatmentInfoHistoric();
         result.setEventDate(ph.getEventDate());

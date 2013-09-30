@@ -15,11 +15,11 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
   
-  You should have received a copy of the GNU General Public 
-  License along with this program.  If not, see
-  <http://www.gnu.org/licenses/gpl-3.0.html>.
-  #L%
-  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+You should have received a copy of the GNU General Public 
+License along with this program.  If not, see
+<http://www.gnu.org/licenses/gpl-3.0.html>.
+#L%
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.abada</groupId>
     <artifactId>trazability</artifactId>
@@ -39,7 +39,7 @@
                     <![CDATA[
                         <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="ds1">
                             <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-                            <property name="url" value="jdbc:mysql://imasd.abadasoft.com:3306/contramed" />
+                            <property name="url" value="jdbc:mysql://imasd.abadasoft.com:3306/trazability" />
                             <property name="username" value="mysql" />
                             <property name="password" value="4b4D4." />
                             <property name="testOnBorrow" value="true" />
@@ -78,11 +78,58 @@
             </properties>
         </profile>
     </profiles>
-  <modules>
-    <module>trazability-api</module>
-    <module>trazability-entities</module>
-    <module>trazability-dao</module>
-    <module>trazability-rest</module>
-    <module>trazability-web</module>
+    <modules>
+        <module>trazability-api</module>
+        <module>trazability-entities</module>
+        <module>trazability-dao</module>
+        <module>trazability-rest</module>
+        <module>trazability-web</module>
+    <module>trazability-jasper-utils</module>
+    <module>trazability-jasper-commons</module>
+    <module>trazability-jasper-print</module>
+    <module>trazability-datamatrix-utils</module>
   </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.5</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <licenseName>gpl_v3</licenseName>
+                    <organizationName>Abada Servicios Desarrollo (investigacion@abadasoft.com)</organizationName>
+                    <inceptionYear>2013</inceptionYear>                                                        
+                    <projectName>Trazability</projectName>                            
+                    <excludes>
+                        <exclude>**/README</exclude>
+                        <exclude>**/*.ftl</exclude>
+                        <exclude>**/*.js</exclude>
+                        <exclude>**/*.css</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <licenseName>gpl_v3</licenseName>
+                            <organizationName>Abada Servicios Desarrollo (investigacion@abadasoft.com)</organizationName>
+                            <inceptionYear>2013</inceptionYear>                                                        
+                            <projectName>Trazability</projectName>                            
+                            <excludes>
+                                <exclude>**/README</exclude>
+                                <exclude>**/*.ftl</exclude>
+                                <exclude>**/*.js</exclude>
+                                <exclude>**/*.css</exclude>
+                            </excludes>
+                        </configuration>                        
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

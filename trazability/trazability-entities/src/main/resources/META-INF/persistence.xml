@@ -20,11 +20,52 @@
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
   -->
-
 <persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
   <persistence-unit name="trazabilityPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <class>com.abada.trazability.entity.SampleEntity</class>
+    <class>com.abada.trazability.entity.Address</class>
+    <class>com.abada.trazability.entity.TimingRange</class>
+    <class>com.abada.trazability.entity.CatalogoHasTemplates</class>
+    <class>com.abada.trazability.entity.CatalogoMedicamentos</class>
+    <class>com.abada.trazability.entity.City</class>
+    <class>com.abada.trazability.entity.Dose</class>
+    <class>com.abada.trazability.entity.FrecuenciaPredef</class>
+    <class>com.abada.trazability.entity.GivesHistoric</class>
+    <class>com.abada.trazability.entity.GivesIncidence</class>
+    <class>com.abada.trazability.entity.MeasureUnit</class>
+    <class>com.abada.trazability.entity.MeasureUnitConversion</class>
+    <class>com.abada.trazability.entity.MedicationAdditionalInformation</class>
+    <class>com.abada.trazability.entity.Nation</class>
+    <class>com.abada.trazability.entity.Observation</class>
+    <class>com.abada.trazability.entity.Order1</class>
+    <class>com.abada.trazability.entity.OrderMedication</class>
+    <class>com.abada.trazability.entity.OrderMedicationInstruction</class>
+    <class>com.abada.trazability.entity.OrderMedicationObservation</class>
+    <class>com.abada.trazability.entity.OrderTiming</class>
+    <class>com.abada.trazability.entity.Patient</class>
+    <class>com.abada.trazability.entity.PatientId</class>
+    <class>com.abada.trazability.entity.PatientTag</class>
+    <class>com.abada.trazability.entity.Plantas</class>
+    <class>com.abada.trazability.entity.PrepareHistoric</class>
+    <class>com.abada.trazability.entity.PrepareIncidence</class>
+    <class>com.abada.trazability.entity.PrincipioActivo</class>
+    <class>com.abada.trazability.entity.PrincipioHasEspecialidad</class>
+    <class>com.abada.trazability.entity.Province</class>
+    <class>com.abada.trazability.entity.Recurso</class>
+    <class>com.abada.trazability.entity.RecursoTag</class>
+    <class>com.abada.trazability.entity.Region</class>
+    <class>com.abada.trazability.entity.Servicio</class>
+    <class>com.abada.trazability.entity.Staff</class>
+    <class>com.abada.trazability.entity.Table0001</class>
+    <class>com.abada.trazability.entity.Table0002</class>
+    <class>com.abada.trazability.entity.Table0038</class>
+    <class>com.abada.trazability.entity.Table0119</class>
+    <class>com.abada.trazability.entity.Table0162</class>
+    <class>com.abada.trazability.entity.Table0166</class>
+    <class>com.abada.trazability.entity.Tablez029</class>
+    <class>com.abada.trazability.entity.Telephone</class>
+    <class>com.abada.trazability.entity.TelephoneDoctor</class>
+    <class>com.abada.trazability.entity.TemplatesMedication</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.dialect" value="${db.dialect}"/>

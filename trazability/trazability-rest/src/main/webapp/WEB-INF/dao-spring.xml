@@ -50,6 +50,5 @@
         <property name="dataSource" ref="ds1" />
     </bean> 
     
-    <bean id="sampleDao" class="com.abada.trazability.dao.impl.SampleDaoImpl" />
 </beans>
 

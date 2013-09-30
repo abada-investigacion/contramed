@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author katsu
  */
 @Controller
+@RequestMapping("/rs/identity/user")
 public class IdentityController {
 
     @Resource
